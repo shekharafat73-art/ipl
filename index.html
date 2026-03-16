@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MyCricket — IPL Tickets</title>
+<title>BookMyStand — Book IPL Cricket Tickets Online | UPI Payment</title>
+<meta name="description" content="Book IPL 2026 cricket tickets online. Instant Booking ID, QR e-ticket delivery in 15 minutes. Pay via UPI, GPay, PhonePe. BookMyStand — India's fastest ticket reseller.">
+<meta name="keywords" content="IPL tickets, IPL 2026 tickets, cricket tickets online, book IPL tickets, MI tickets, CSK tickets, RCB tickets">
+<meta property="og:title" content="BookMyStand — Book IPL Tickets Online">
+<meta property="og:description" content="Fastest IPL ticket delivery in India. UPI payment, QR ticket in 15 minutes.">
+<meta name="theme-color" content="#F0FF41">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -279,7 +284,7 @@ h1 em{color:var(--accent);font-style:normal;}
 
 <!-- NAV -->
 <nav>
-  <div class="logo">MY<span style="color:var(--red)">CRICKET</span><sup>IPL 2025</sup></div>
+  <div class="logo">BOOK<span style="color:var(--red)">MYSTAND</span><sup>IPL 2026</sup></div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('customer')">🎟 Buy Tickets</button>
     <button class="nav-tab" onclick="showPage('admin')">⚡ Admin</button>
@@ -290,7 +295,7 @@ h1 em{color:var(--accent);font-style:normal;}
 <div class="page active" id="page-customer">
 
   <div class="hero">
-    <div class="hero-tag">IPL Season 2025 · Official Reseller</div>
+    <div class="hero-tag">IPL Season 2026 · Official Reseller</div>
     <h1>Book Your<br><em>IPL Seats</em><br>Instantly</h1>
     <p class="hero-sub">Pay via UPI. Get your Booking ID instantly — QR ticket delivered within 15 minutes. No account needed.</p>
 
@@ -298,7 +303,7 @@ h1 em{color:var(--accent);font-style:normal;}
     <div style="background:rgba(65,179,255,0.07);border:1px solid rgba(65,179,255,0.2);border-radius:10px;padding:12px 16px;margin-bottom:24px;max-width:560px;display:flex;gap:10px;align-items:flex-start;">
       <span style="font-size:16px;flex-shrink:0;">ℹ️</span>
       <div style="font-size:12px;color:#41B3FF;line-height:1.7;">
-        <strong>Authorised Ticket Reseller.</strong> MyCricket is an independent ticket reseller — not affiliated with BCCI or any IPL franchise. Tickets are sourced from verified sellers. A ₹150 convenience fee applies per booking. All sales are final once QR is issued.
+        <strong>Authorised Ticket Reseller.</strong> BookMyStand is an independent ticket reseller — not affiliated with BCCI or any IPL franchise. Tickets are sourced from verified sellers. A ₹150 convenience fee applies per booking. All sales are final once QR is issued.
       </div>
     </div>
 
@@ -325,7 +330,7 @@ h1 em{color:var(--accent);font-style:normal;}
 <div class="page" id="page-admin">
   <div class="admin-wrap">
     <div class="admin-header">
-      <div class="admin-title">⚡ MyCricket Admin</div>
+      <div class="admin-title">⚡ BookMyStand Admin</div>
     </div>
 
     <!-- Config -->
@@ -338,7 +343,7 @@ h1 em{color:var(--accent);font-style:normal;}
         </div>
         <div class="fg">
           <label>Your Name (shown to buyer)</label>
-          <input type="text" id="cfg-name" placeholder="Arafat / MyCricket" oninput="saveConfig()" />
+          <input type="text" id="cfg-name" placeholder="Arafat / BookMyStand" oninput="saveConfig()" />
         </div>
       </div>
       <div style="margin-top:12px;">
@@ -501,7 +506,7 @@ h1 em{color:var(--accent);font-style:normal;}
           </div>
 
           <div style="background:rgba(65,179,255,0.07);border:1px solid rgba(65,179,255,0.15);border-radius:8px;padding:12px;margin-top:16px;font-size:11px;color:var(--blue);line-height:1.6;">
-            ℹ️ <strong>MyCricket is an authorised ticket reseller.</strong> Not affiliated with BCCI or IPL. ₹150 convenience fee applied. All sales final once QR is issued.
+            ℹ️ <strong>BookMyStand is an authorised ticket reseller.</strong> Not affiliated with BCCI or IPL. ₹150 convenience fee applied. All sales final once QR is issued.
           </div>
         </div>
         <button class="submit-btn" style="background:var(--s3);color:var(--text);border:1px solid var(--border);margin-top:8px;" onclick="closeModal()">
@@ -540,7 +545,7 @@ h1 em{color:var(--accent);font-style:normal;}
 const STATIC_MATCHES = [
   { id:'m1', home:'Mumbai Indians', home_a:'MI', away:'Kolkata Knight Riders', away_a:'KKR',
     home_color:'#004BA0', away_color:'#3A225D',
-    venue:'Wankhede Stadium, Mumbai', date:'2025-04-03', time:'7:30 PM', status:'upcoming', live_score:null,
+    venue:'Wankhede Stadium, Mumbai', date:'2026-04-03', time:'7:30 PM', status:'upcoming', live_score:null,
     zones:[
       {id:'premium',name:'Premium Box',price:3200,avail:48},
       {id:'stand_a',name:'Stand A',price:1600,avail:312},
@@ -551,7 +556,7 @@ const STATIC_MATCHES = [
     ]},
   { id:'m2', home:'Royal Challengers Bengaluru', home_a:'RCB', away:'Rajasthan Royals', away_a:'RR',
     home_color:'#E32636', away_color:'#254AA5',
-    venue:'M Chinnaswamy Stadium, Bangalore', date:'2025-04-05', time:'3:30 PM', status:'upcoming', live_score:null,
+    venue:'M Chinnaswamy Stadium, Bangalore', date:'2026-04-05', time:'3:30 PM', status:'upcoming', live_score:null,
     zones:[
       {id:'premium',name:'Premium Box',price:2800,avail:62},
       {id:'stand_a',name:'Stand A',price:1400,avail:445},
@@ -560,7 +565,7 @@ const STATIC_MATCHES = [
     ]},
   { id:'m3', home:'Chennai Super Kings', home_a:'CSK', away:'Delhi Capitals', away_a:'DC',
     home_color:'#F7A721', away_color:'#17479E',
-    venue:'MA Chidambaram Stadium, Chennai', date:'2025-04-06', time:'7:30 PM', status:'upcoming', live_score:null,
+    venue:'MA Chidambaram Stadium, Chennai', date:'2026-04-06', time:'7:30 PM', status:'upcoming', live_score:null,
     zones:[
       {id:'premium',name:'Premium Box',price:3500,avail:12},
       {id:'stand_a',name:'Stand A',price:1800,avail:89},
@@ -571,7 +576,7 @@ const STATIC_MATCHES = [
     ]},
   { id:'m4', home:'Sunrisers Hyderabad', home_a:'SRH', away:'Punjab Kings', away_a:'PBKS',
     home_color:'#F7621E', away_color:'#A41D23',
-    venue:'Rajiv Gandhi Intl. Stadium, Hyderabad', date:'2025-04-08', time:'7:30 PM', status:'upcoming', live_score:null,
+    venue:'Rajiv Gandhi Intl. Stadium, Hyderabad', date:'2026-04-08', time:'7:30 PM', status:'upcoming', live_score:null,
     zones:[
       {id:'stand_a',name:'Stand A',price:1200,avail:445},
       {id:'south',name:'South Stand',price:900,avail:712},
@@ -588,13 +593,13 @@ function getBookings() {
 function saveBookings(b) { localStorage.setItem('pp_bookings', JSON.stringify(b)) }
 
 function getConfig() {
-  try { return JSON.parse(localStorage.getItem('pp_config') || '{"upi":"yourname@upi","name":"MyCricket","apikey":""}') }
-  catch(e) { return {upi:'yourname@upi',name:'MyCricket',apikey:''} }
+  try { return JSON.parse(localStorage.getItem('pp_config') || '{"upi":"yourname@upi","name":"BookMyStand","apikey":""}') }
+  catch(e) { return {upi:'yourname@upi',name:'BookMyStand',apikey:''} }
 }
 function saveConfig() {
   const cfg = {
     upi: document.getElementById('cfg-upi').value || 'yourname@upi',
-    name: document.getElementById('cfg-name').value || 'MyCricket',
+    name: document.getElementById('cfg-name').value || 'BookMyStand',
     apikey: document.getElementById('cfg-apikey').value || ''
   }
   localStorage.setItem('pp_config', JSON.stringify(cfg))
@@ -666,7 +671,7 @@ async function fetchLiveMatches() {
     const iplMatches = (data.data || []).filter(m =>
       m.name && (
         m.name.toLowerCase().includes('ipl') ||
-        m.series_id === 'd5a498c8-7596-4b93-8ab0-e0efc3345312' || // IPL 2025 series ID
+        m.series_id === 'd5a498c8-7596-4b93-8ab0-e0efc3345312' || // IPL 2026 series ID
         (m.teamInfo && m.teamInfo.some(t => Object.keys(TEAM_META).includes(t.name)))
       )
     )
@@ -693,7 +698,7 @@ async function fetchLiveMatches() {
 }
 
 async function fetchIPLSchedule(apikey) {
-  // IPL 2025 series ID on CricketData.org
+  // IPL 2026 series ID on CricketData.org
   const IPL_SERIES_ID = 'd5a498c8-7596-4b93-8ab0-e0efc3345312'
   try {
     const res = await fetch(`https://api.cricapi.com/v1/series_info?apikey=${apikey}&id=${IPL_SERIES_ID}`)
@@ -879,7 +884,7 @@ function proceedToPayment() {
   document.getElementById('pay-upi-id').textContent = cfg.upi
 
   // Generate UPI payment QR
-  const upiUrl = `upi://pay?pa=${cfg.upi}&pn=${encodeURIComponent(cfg.name)}&am=${sel.total}&cu=INR&tn=MyCricket-IPL-Ticket`
+  const upiUrl = `upi://pay?pa=${cfg.upi}&pn=${encodeURIComponent(cfg.name)}&am=${sel.total}&cu=INR&tn=BookMyStand-IPL-Ticket`
   document.getElementById('upi-qr').innerHTML = ''
   new QRCode(document.getElementById('upi-qr'), {
     text: upiUrl, width:160, height:160,
@@ -1067,7 +1072,7 @@ function waShare(id) {
   const bookings = getBookings()
   const b = bookings.find(x=>x.id===id)
   if (!b) return
-  const msg = `✅ *MyCricket — Your Ticket is Confirmed!*\n\n` +
+  const msg = `✅ *BookMyStand — Your Ticket is Confirmed!*\n\n` +
     `🏏 Match: ${b.match_full}\n` +
     `📍 Venue: ${b.venue}\n` +
     `📅 Date: ${fmtDate(b.date)} · ${b.time}\n` +
@@ -1075,7 +1080,7 @@ function waShare(id) {
     `🆔 Booking ID: *${b.id}*\n\n` +
     `Ticket IDs:\n${b.tickets.map(t=>`• ${t.ticket_id} — Row ${t.row}, Seat ${t.seat}`).join('\n')}\n\n` +
     `Show your Booking ID at the gate. Enjoy the match! 🏆\n` +
-    `_MyCricket — Authorised Ticket Reseller_`
+    `_BookMyStand — Authorised Ticket Reseller_`
   window.open(`https://wa.me/91${b.buyer_phone}?text=${encodeURIComponent(msg)}`, '_blank')
 }
 
