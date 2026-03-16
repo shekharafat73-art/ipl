@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyCricket — IPL Tickets</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root {
+  --bg:#07090D; --s1:#0D1117; --s2:#131920; --s3:#1A2230;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.12);
+  --accent:#F0FF41; --red:#FF4040; --green:#3DFF8F; --blue:#41B3FF;
+  --text:#EEF2F7; --muted:#4A5568; --muted2:#718096;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;
+  border-bottom:1px solid var(--border);background:rgba(7,9,13,0.96);
+  backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--accent);}
+.logo sup{font-size:11px;color:var(--red);letter-spacing:1px;font-family:'Outfit',sans-serif;font-weight:600;}
+.nav-tabs{display:flex;gap:4px;background:var(--s2);border-radius:8px;padding:4px;}
+.nav-tab{padding:7px 18px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;
+  color:var(--muted2);transition:all .2s;border:none;background:transparent;font-family:'Outfit',sans-serif;}
+.nav-tab.active{background:var(--s3);color:var(--text);}
+
+/* ── PAGES ── */
+.page{display:none;} .page.active{display:block;}
+
+/* ── CUSTOMER PAGE ── */
+.hero{padding:60px 32px 40px;max-width:1100px;margin:0 auto;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);
+  letter-spacing:3px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.hero-tag::before{content:'';width:20px;height:1px;background:var(--accent);}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,96px);
+  line-height:.92;letter-spacing:1px;margin-bottom:20px;}
+h1 em{color:var(--accent);font-style:normal;}
+.hero-sub{color:var(--muted2);font-size:16px;max-width:500px;line-height:1.7;margin-bottom:32px;}
+.trust-row{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:48px;}
+.trust-pill{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted2);}
+.trust-dot{width:6px;height:6px;border-radius:50%;}
+
+/* ── MATCHES ── */
+.section{max-width:1100px;margin:0 auto;padding:0 32px 60px;}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;}
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+
+.match-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;
+  padding:22px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.match-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--c1,var(--accent)),var(--c2,var(--red)));}
+.match-card:hover{border-color:var(--border2);transform:translateY(-3px);
+  box-shadow:0 24px 48px rgba(0,0,0,.5);}
+.match-card.selected{border-color:var(--accent);background:rgba(240,255,65,.03);}
+.card-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);
+  letter-spacing:.5px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;}
+.badge-hot{background:rgba(255,64,64,.15);color:var(--red);}
+.badge-ok{background:rgba(61,255,143,.1);color:var(--green);}
+.badge-sold{background:rgba(255,255,255,.06);color:var(--muted);}
+.teams{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.team-badge{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;flex-shrink:0;}
+.team-info{flex:1;}
+.team-name{font-size:14px;font-weight:600;line-height:1.3;}
+.team-city{font-size:11px;color:var(--muted2);}
+.vs-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);padding:0 4px;}
+.card-venue{font-size:12px;color:var(--muted2);margin-bottom:14px;}
+.card-footer{display:flex;justify-content:space-between;align-items:center;
+  padding-top:14px;border-top:1px solid var(--border);}
+.price-from{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.price-val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;}
+.btn-book{padding:8px 18px;background:var(--accent);color:#07090D;border:none;
+  border-radius:7px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .2s;}
+.btn-book:hover{background:#e0f030;transform:scale(1.03);}
+.btn-book:disabled{background:var(--s3);color:var(--muted);cursor:not-allowed;transform:none;}
+
+/* ── BOOKING MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);
+  z-index:200;display:none;align-items:center;justify-content:center;padding:16px;}
+.overlay.open{display:flex;}
+.modal{background:var(--s1);border:1px solid var(--border2);border-radius:18px;
+  width:100%;max-width:560px;max-height:90vh;overflow-y:auto;}
+.modal-head{display:flex;justify-content:space-between;align-items:center;
+  padding:22px 26px;border-bottom:1px solid var(--border);position:sticky;top:0;
+  background:var(--s1);z-index:1;}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;}
+.close{width:34px;height:34px;border:1px solid var(--border);background:transparent;
+  color:var(--text);border-radius:8px;cursor:pointer;font-size:16px;display:flex;
+  align-items:center;justify-content:center;transition:all .2s;}
+.close:hover{border-color:var(--red);color:var(--red);}
+.modal-body{padding:24px 26px;}
+
+/* ZONE PICKER */
+.zones{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;}
+.zone{background:var(--s2);border:1px solid var(--border);border-radius:10px;
+  padding:14px;cursor:pointer;transition:all .2s;}
+.zone:hover{border-color:var(--border2);}
+.zone.active{border-color:var(--accent);background:rgba(240,255,65,.05);}
+.zone.soldout{opacity:.4;pointer-events:none;}
+.zone-name{font-size:13px;font-weight:600;margin-bottom:4px;}
+.zone-p{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--accent);}
+.zone-left{font-size:11px;color:var(--muted2);margin-top:3px;}
+
+/* QTY ROW */
+.qty-row{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.qty-label{font-size:13px;color:var(--muted2);}
+.qty-ctrl{display:flex;align-items:center;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.qb{width:36px;height:36px;background:var(--s2);border:none;color:var(--text);
+  font-size:18px;cursor:pointer;transition:background .15s;}
+.qb:hover{background:var(--s3);}
+.qn{width:44px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:14px;
+  border-left:1px solid var(--border);border-right:1px solid var(--border);}
+
+/* FORM */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-row.one{grid-template-columns:1fr;}
+.fg label{display:block;font-size:11px;color:var(--muted2);text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:6px;}
+.fg input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:8px;
+  padding:11px 14px;color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;
+  outline:none;transition:border .2s;}
+.fg input:focus{border-color:var(--accent);}
+.fg input::placeholder{color:var(--muted);}
+
+/* UPI PAYMENT BOX */
+.upi-box{background:var(--s2);border:1px solid var(--border);border-radius:12px;
+  padding:20px;margin-bottom:20px;text-align:center;}
+.upi-id-display{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;
+  color:var(--accent);margin:12px 0;letter-spacing:1px;}
+.upi-amount{font-size:28px;font-weight:700;margin-bottom:4px;}
+.upi-note{font-size:12px;color:var(--muted2);line-height:1.6;}
+.upi-apps{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.upi-app{padding:6px 14px;background:var(--s3);border:1px solid var(--border);
+  border-radius:20px;font-size:12px;font-weight:600;color:var(--muted2);}
+#upi-qr{margin:12px auto;width:160px;height:160px;}
+#upi-qr canvas{border-radius:8px;}
+
+/* UTR FIELD */
+.utr-section{background:rgba(240,255,65,.04);border:1px solid rgba(240,255,65,.2);
+  border-radius:10px;padding:16px;margin-bottom:18px;}
+.utr-title{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:10px;}
+.utr-input{width:100%;background:var(--s1);border:1px solid var(--border2);border-radius:8px;
+  padding:12px 14px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:16px;
+  letter-spacing:2px;outline:none;text-transform:uppercase;}
+.utr-input:focus{border-color:var(--accent);}
+.utr-note{font-size:11px;color:var(--muted2);margin-top:8px;line-height:1.5;}
+
+/* ORDER BOX */
+.order-box{background:var(--s2);border:1px solid var(--border);border-radius:10px;
+  padding:16px;margin-bottom:18px;}
+.order-row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted2);
+  margin-bottom:8px;}
+.order-row span:last-child{color:var(--text);}
+.order-total{display:flex;justify-content:space-between;font-size:16px;font-weight:600;
+  padding-top:12px;border-top:1px solid var(--border);margin-top:4px;}
+.order-total span:last-child{font-family:'JetBrains Mono',monospace;color:var(--accent);}
+
+/* SUBMIT BTN */
+.submit-btn{width:100%;padding:15px;background:var(--accent);color:#07090D;border:none;
+  border-radius:10px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.submit-btn:hover:not(:disabled){background:#e0f030;transform:translateY(-1px);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* PENDING STATE */
+.pending-box{text-align:center;padding:20px 0;}
+.pending-icon{font-size:52px;margin-bottom:12px;}
+.pending-bid{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;
+  color:var(--accent);letter-spacing:3px;margin:12px 0;}
+.pending-steps{text-align:left;margin-top:20px;}
+.pstep{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;font-size:13px;color:var(--muted2);}
+.pstep-num{width:24px;height:24px;border-radius:50%;background:var(--s3);
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+  font-weight:700;flex-shrink:0;color:var(--text);}
+.pstep-num.done{background:rgba(61,255,143,.2);color:var(--green);}
+
+/* ── ADMIN PAGE ── */
+.admin-wrap{max-width:1100px;margin:0 auto;padding:32px;}
+.admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;}
+.admin-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;}
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px;}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.stat-label{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;}
+.stat-val.green{color:var(--green);}
+.stat-val.yellow{color:var(--accent);}
+.stat-val.red{color:var(--red);}
+
+/* ADMIN FILTER */
+.admin-filter{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-btn{padding:7px 16px;background:var(--s2);border:1px solid var(--border);
+  border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted2);
+  transition:all .2s;font-family:'Outfit',sans-serif;}
+.filter-btn.active{background:var(--accent);color:#07090D;border-color:var(--accent);}
+
+/* BOOKINGS TABLE */
+.bookings-list{display:flex;flex-direction:column;gap:10px;}
+.booking-row{background:var(--s1);border:1px solid var(--border);border-radius:12px;
+  padding:18px 20px;display:grid;grid-template-columns:auto 1fr auto auto;gap:16px;align-items:center;}
+.booking-row:hover{border-color:var(--border2);}
+.bid{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);}
+.booking-info{min-width:0;}
+.booking-match{font-size:14px;font-weight:600;margin-bottom:3px;}
+.booking-meta{font-size:12px;color:var(--muted2);}
+.booking-utr{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);}
+.status-badge{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;
+  letter-spacing:.5px;white-space:nowrap;}
+.s-pending{background:rgba(255,164,0,.12);color:#FFA400;}
+.s-confirmed{background:rgba(61,255,143,.1);color:var(--green);}
+.s-rejected{background:rgba(255,64,64,.1);color:var(--red);}
+.action-btns{display:flex;gap:8px;}
+.btn-confirm{padding:7px 14px;background:rgba(61,255,143,.12);border:1px solid rgba(61,255,143,.3);
+  color:var(--green);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;
+  font-family:'Outfit',sans-serif;transition:all .2s;}
+.btn-confirm:hover{background:rgba(61,255,143,.2);}
+.btn-reject{padding:7px 14px;background:rgba(255,64,64,.1);border:1px solid rgba(255,64,64,.25);
+  color:var(--red);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;
+  font-family:'Outfit',sans-serif;transition:all .2s;}
+.btn-reject:hover{background:rgba(255,64,64,.18);}
+.btn-view{padding:7px 14px;background:var(--s2);border:1px solid var(--border);
+  color:var(--muted2);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;
+  font-family:'Outfit',sans-serif;transition:all .2s;}
+.btn-view:hover{color:var(--text);border-color:var(--border2);}
+.empty-admin{text-align:center;padding:60px 0;color:var(--muted2);font-size:14px;}
+
+/* TICKET MODAL */
+.ticket-modal{background:var(--s1);border:1px solid var(--border2);border-radius:18px;
+  width:100%;max-width:420px;padding:32px;text-align:center;}
+.ticket-modal h3{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:4px;}
+.ticket-modal .sub{font-size:13px;color:var(--muted2);margin-bottom:20px;}
+.ticket-qr{background:#fff;border-radius:12px;padding:14px;display:inline-block;margin-bottom:16px;}
+.ticket-qr canvas{display:block;}
+.ticket-detail{background:var(--s2);border-radius:10px;padding:14px;text-align:left;margin-bottom:16px;}
+.td-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;color:var(--muted2);}
+.td-row span:last-child{color:var(--text);font-weight:500;}
+.td-row:last-child{margin:0;}
+.tkt-ids{background:var(--s3);border-radius:8px;padding:12px;margin-bottom:16px;text-align:left;}
+.tkt-id-item{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);
+  margin-bottom:4px;}
+.tkt-id-item:last-child{margin:0;}
+.btn-close-ticket{width:100%;padding:12px;background:var(--s2);border:1px solid var(--border);
+  color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:14px;
+  font-weight:600;cursor:pointer;margin-top:4px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--s1);border:1px solid var(--border2);
+  border-radius:10px;padding:14px 18px;font-size:13px;z-index:999;max-width:300px;
+  transform:translateY(60px);opacity:0;transition:all .3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{border-color:var(--green);}
+.toast.err{border-color:var(--red);}
+
+/* CONFIG SECTION */
+.config-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;
+  padding:20px;margin-bottom:24px;}
+.config-title{font-size:14px;font-weight:600;margin-bottom:14px;color:var(--muted2);
+  text-transform:uppercase;letter-spacing:.5px;}
+.config-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+@media(max-width:700px){
+  .matches-grid{grid-template-columns:1fr;}
+  .zones{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .admin-stats{grid-template-columns:1fr 1fr;}
+  .booking-row{grid-template-columns:1fr;gap:10px;}
+  .action-btns{flex-wrap:wrap;}
+  nav{padding:12px 16px;}
+  .hero,.section,.admin-wrap{padding-left:16px;padding-right:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">MY<span style="color:var(--red)">CRICKET</span><sup>IPL 2025</sup></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('customer')">🎟 Buy Tickets</button>
+    <button class="nav-tab" onclick="showPage('admin')">⚡ Admin</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════ CUSTOMER PAGE ══════════════════════════ -->
+<div class="page active" id="page-customer">
+
+  <div class="hero">
+    <div class="hero-tag">IPL Season 2025 · Official Reseller</div>
+    <h1>Book Your<br><em>IPL Seats</em><br>Instantly</h1>
+    <p class="hero-sub">Pay via UPI. Get your Booking ID instantly — QR ticket delivered within 15 minutes. No account needed.</p>
+
+    <!-- RESELLER NOTICE -->
+    <div style="background:rgba(65,179,255,0.07);border:1px solid rgba(65,179,255,0.2);border-radius:10px;padding:12px 16px;margin-bottom:24px;max-width:560px;display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:16px;flex-shrink:0;">ℹ️</span>
+      <div style="font-size:12px;color:#41B3FF;line-height:1.7;">
+        <strong>Authorised Ticket Reseller.</strong> MyCricket is an independent ticket reseller — not affiliated with BCCI or any IPL franchise. Tickets are sourced from verified sellers. A ₹150 convenience fee applies per booking. All sales are final once QR is issued.
+      </div>
+    </div>
+
+    <div class="trust-row">
+      <div class="trust-pill"><div class="trust-dot" style="background:var(--green)"></div>Instant Booking ID</div>
+      <div class="trust-pill"><div class="trust-dot" style="background:var(--accent)"></div>Ticket in 15 Minutes</div>
+      <div class="trust-pill"><div class="trust-dot" style="background:var(--blue)"></div>Zero Server Issues</div>
+      <div class="trust-pill"><div class="trust-dot" style="background:#FF9F40)"></div>₹150 Convenience Fee</div>
+      <div class="trust-pill"><div class="trust-dot" style="background:var(--red)"></div>Verified QR Tickets</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Upcoming Matches</div>
+    </div>
+    <div class="matches-grid" id="matches-grid">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ ADMIN PAGE ══════════════════════════ -->
+<div class="page" id="page-admin">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <div class="admin-title">⚡ MyCricket Admin</div>
+    </div>
+
+    <!-- Config -->
+    <div class="config-card">
+      <div class="config-title">Your UPI Settings</div>
+      <div class="config-row">
+        <div class="fg">
+          <label>Your UPI ID</label>
+          <input type="text" id="cfg-upi" placeholder="yourname@upi" oninput="saveConfig()" />
+        </div>
+        <div class="fg">
+          <label>Your Name (shown to buyer)</label>
+          <input type="text" id="cfg-name" placeholder="Arafat / MyCricket" oninput="saveConfig()" />
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <div class="fg">
+          <label>CricketData.org API Key — <a href="https://cricketdata.org/signup.aspx" target="_blank" style="color:var(--accent);text-decoration:none;">Get free key here →</a></label>
+          <input type="text" id="cfg-apikey" placeholder="Paste your free API key from cricketdata.org" style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;" />
+        </div>
+        <button onclick="saveConfig();fetchLiveMatches()" style="margin-top:10px;padding:8px 20px;background:var(--accent);color:#07090D;border:none;border-radius:7px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">
+          💾 Save & Load Live Matches
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="admin-stats">
+      <div class="stat-card">
+        <div class="stat-label">Pending</div>
+        <div class="stat-val yellow" id="stat-pending">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Confirmed</div>
+        <div class="stat-val green" id="stat-confirmed">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-val" id="stat-total">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Revenue</div>
+        <div class="stat-val green" id="stat-revenue">₹0</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="admin-filter">
+      <button class="filter-btn active" onclick="filterBookings('all',this)">All</button>
+      <button class="filter-btn" onclick="filterBookings('pending',this)">⏳ Pending</button>
+      <button class="filter-btn" onclick="filterBookings('confirmed',this)">✅ Confirmed</button>
+      <button class="filter-btn" onclick="filterBookings('rejected',this)">❌ Rejected</button>
+    </div>
+
+    <div class="bookings-list" id="bookings-list">
+      <div class="empty-admin">No bookings yet. Share your link with fans! 🏏</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ BOOKING MODAL ══════════════ -->
+<div class="overlay" id="booking-overlay">
+  <div class="modal" id="booking-modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">Book Tickets</div>
+      <button class="close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <!-- Step 1: Zone + Details -->
+      <div id="mstep1">
+        <div style="font-size:12px;color:var(--muted2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;">Choose Zone</div>
+        <div class="zones" id="modal-zones"></div>
+
+        <div class="qty-row">
+          <span class="qty-label">Tickets</span>
+          <div class="qty-ctrl">
+            <button class="qb" onclick="chQty(-1)">−</button>
+            <div class="qn" id="qn">2</div>
+            <button class="qb" onclick="chQty(1)">+</button>
+          </div>
+          <span style="font-size:12px;color:var(--muted)">max 8</span>
+        </div>
+
+        <div class="order-box" id="order-preview" style="display:none">
+          <div class="order-row"><span id="op-zone">—</span><span id="op-unit">—</span></div>
+          <div class="order-row"><span>Convenience fee</span><span id="op-fee">₹150</span></div>
+          <div class="order-row"><span>GST (18%)</span><span id="op-gst">—</span></div>
+          <div class="order-total"><span>Total</span><span id="op-total">—</span></div>
+        </div>
+
+        <div style="font-size:12px;color:var(--muted2);margin-bottom:12px;margin-top:20px;text-transform:uppercase;letter-spacing:.5px;">Your Details</div>
+        <div class="form-row">
+          <div class="fg"><label>Full Name *</label><input id="f-name" type="text" placeholder="Rohit Sharma"/></div>
+          <div class="fg"><label>Mobile *</label><input id="f-phone" type="tel" placeholder="9876543210" maxlength="10"/></div>
+        </div>
+        <div class="form-row one">
+          <div class="fg"><label>Email (optional)</label><input id="f-email" type="email" placeholder="rohit@gmail.com"/></div>
+        </div>
+
+        <button class="submit-btn" style="margin-top:16px" onclick="proceedToPayment()">
+          Continue to Payment →
+        </button>
+      </div>
+
+      <!-- Step 2: UPI Payment -->
+      <div id="mstep2" style="display:none">
+
+        <!-- DELIVERY PROMISE BAR -->
+        <div style="background:rgba(61,255,143,0.08);border:1px solid rgba(61,255,143,0.2);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+          <span style="font-size:20px;">⚡</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--green);">Fastest Ticket Delivery — Under 15 Minutes</div>
+            <div style="font-size:11px;color:var(--muted2);margin-top:2px;">Our team monitors payments 24/7. Once your UTR is verified, your QR ticket is released instantly. Zero server delays.</div>
+          </div>
+        </div>
+
+        <div class="upi-box">
+          <div style="font-size:12px;color:var(--muted2);margin-bottom:4px;">PAY EXACTLY</div>
+          <div class="upi-amount" id="pay-amount">₹0</div>
+          <div style="font-size:12px;color:var(--muted2);margin-bottom:8px;">to UPI ID</div>
+          <div class="upi-id-display" id="pay-upi-id">—</div>
+          <div id="upi-qr"></div>
+          <div class="upi-apps">
+            <div class="upi-app">GPay</div>
+            <div class="upi-app">PhonePe</div>
+            <div class="upi-app">Paytm</div>
+            <div class="upi-app">BHIM</div>
+            <div class="upi-app">Any UPI App</div>
+          </div>
+          <div class="upi-note" style="margin-top:12px;">
+            ⚠️ Pay the <strong>exact amount</strong> shown. Enter UTR below after paying.
+          </div>
+        </div>
+
+        <div class="utr-section">
+          <div class="utr-title">📋 Enter UTR / Transaction ID after payment</div>
+          <input class="utr-input" id="utr-input" type="text" placeholder="UTR123456789012"
+            maxlength="20" oninput="this.value=this.value.toUpperCase()"/>
+          <div class="utr-note">
+            Find this in GPay → Transaction Details → UTR Number<br>
+            Or PhonePe → History → Transaction ID<br>
+            It's a 12-digit number (UPI Ref No.)
+          </div>
+        </div>
+
+        <button class="submit-btn" onclick="submitBooking()">
+          ✅ I've Paid — Submit Booking
+        </button>
+        <div style="font-size:11px;color:var(--muted2);text-align:center;margin-top:12px;line-height:1.6;">
+          Your Booking ID is issued instantly. QR ticket delivered within <strong style="color:var(--accent)">15 minutes</strong> after UTR verification. We are an authorised ticket reseller — ₹150 convenience fee included in your total.
+        </div>
+      </div>
+
+      <!-- Step 3: Pending confirmation -->
+      <div id="mstep3" style="display:none">
+        <div class="pending-box">
+          <div class="pending-icon">🎟️</div>
+          <div style="font-size:18px;font-weight:600;margin-bottom:4px;">Booking Received!</div>
+          <div style="font-size:13px;color:var(--muted2);margin-bottom:12px;">Your Booking ID</div>
+          <div class="pending-bid" id="pend-bid">BKG-XXXXXXXX</div>
+          <div style="font-size:12px;color:var(--muted2);margin-bottom:16px;">📸 Screenshot this ID right now.</div>
+
+          <!-- 15 min timer visual -->
+          <div style="background:rgba(240,255,65,0.06);border:1px solid rgba(240,255,65,0.2);border-radius:10px;padding:14px;margin-bottom:16px;text-align:center;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--accent);" id="delivery-timer">15:00</div>
+            <div style="font-size:11px;color:var(--muted2);margin-top:4px;">⚡ Estimated ticket delivery time</div>
+          </div>
+
+          <div class="pending-steps">
+            <div class="pstep"><div class="pstep-num done">✓</div><div><strong>Payment sent via UPI</strong><br><span style="color:var(--muted)">UTR submitted successfully</span></div></div>
+            <div class="pstep"><div class="pstep-num" id="pstep2-num">2</div><div><strong>We verify your UTR</strong><br><span style="color:var(--muted)">Our team checks your payment — under 15 mins</span></div></div>
+            <div class="pstep"><div class="pstep-num" id="pstep3-num">3</div><div><strong>QR ticket sent to you</strong><br><span style="color:var(--muted)">Show at stadium gate · valid for 30 days</span></div></div>
+          </div>
+
+          <div style="background:rgba(65,179,255,0.07);border:1px solid rgba(65,179,255,0.15);border-radius:8px;padding:12px;margin-top:16px;font-size:11px;color:var(--blue);line-height:1.6;">
+            ℹ️ <strong>MyCricket is an authorised ticket reseller.</strong> Not affiliated with BCCI or IPL. ₹150 convenience fee applied. All sales final once QR is issued.
+          </div>
+        </div>
+        <button class="submit-btn" style="background:var(--s3);color:var(--text);border:1px solid var(--border);margin-top:8px;" onclick="closeModal()">
+          Close — I saved my Booking ID ✓
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TICKET MODAL ══════════════ -->
+<div class="overlay" id="ticket-overlay">
+  <div class="ticket-modal">
+    <h3>🎟 E-Ticket</h3>
+    <div class="sub" id="tm-sub">Match details</div>
+    <div class="ticket-qr"><div id="ticket-qr-div"></div></div>
+    <div class="ticket-detail" id="tm-detail"></div>
+    <div class="tkt-ids" id="tm-ticket-ids"></div>
+    <div style="font-size:11px;color:var(--muted2);margin-bottom:14px;line-height:1.5;">
+      Show this QR at the stadium gate. One scan per entry. Do not share screenshot with others.
+    </div>
+    <button class="btn-close-ticket" onclick="closeTicketModal()">Close</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA STORE (localStorage-backed)
+// ═══════════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════════
+// STATIC FALLBACK MATCHES (shown if no API key entered)
+// ═══════════════════════════════════════════════════════════════
+const STATIC_MATCHES = [
+  { id:'m1', home:'Mumbai Indians', home_a:'MI', away:'Kolkata Knight Riders', away_a:'KKR',
+    home_color:'#004BA0', away_color:'#3A225D',
+    venue:'Wankhede Stadium, Mumbai', date:'2025-04-03', time:'7:30 PM', status:'upcoming', live_score:null,
+    zones:[
+      {id:'premium',name:'Premium Box',price:3200,avail:48},
+      {id:'stand_a',name:'Stand A',price:1600,avail:312},
+      {id:'stand_b',name:'Stand B',price:1600,avail:289},
+      {id:'south',name:'South Stand',price:1200,avail:534},
+      {id:'gen_e',name:'General East',price:800,avail:1102},
+      {id:'gen_w',name:'General West',price:800,avail:987},
+    ]},
+  { id:'m2', home:'Royal Challengers Bengaluru', home_a:'RCB', away:'Rajasthan Royals', away_a:'RR',
+    home_color:'#E32636', away_color:'#254AA5',
+    venue:'M Chinnaswamy Stadium, Bangalore', date:'2025-04-05', time:'3:30 PM', status:'upcoming', live_score:null,
+    zones:[
+      {id:'premium',name:'Premium Box',price:2800,avail:62},
+      {id:'stand_a',name:'Stand A',price:1400,avail:445},
+      {id:'south',name:'South Stand',price:1000,avail:712},
+      {id:'gen_e',name:'General',price:600,avail:1340},
+    ]},
+  { id:'m3', home:'Chennai Super Kings', home_a:'CSK', away:'Delhi Capitals', away_a:'DC',
+    home_color:'#F7A721', away_color:'#17479E',
+    venue:'MA Chidambaram Stadium, Chennai', date:'2025-04-06', time:'7:30 PM', status:'upcoming', live_score:null,
+    zones:[
+      {id:'premium',name:'Premium Box',price:3500,avail:12},
+      {id:'stand_a',name:'Stand A',price:1800,avail:89},
+      {id:'stand_b',name:'Stand B',price:1800,avail:134},
+      {id:'south',name:'South Stand',price:1300,avail:298},
+      {id:'gen_e',name:'General East',price:700,avail:567},
+      {id:'gen_w',name:'General West',price:700,avail:623},
+    ]},
+  { id:'m4', home:'Sunrisers Hyderabad', home_a:'SRH', away:'Punjab Kings', away_a:'PBKS',
+    home_color:'#F7621E', away_color:'#A41D23',
+    venue:'Rajiv Gandhi Intl. Stadium, Hyderabad', date:'2025-04-08', time:'7:30 PM', status:'upcoming', live_score:null,
+    zones:[
+      {id:'stand_a',name:'Stand A',price:1200,avail:445},
+      {id:'south',name:'South Stand',price:900,avail:712},
+      {id:'gen_e',name:'General',price:500,avail:1340},
+    ]},
+]
+
+// ═══════════════════════════════════════════════════════════════
+// CONFIG & STORAGE
+// ═══════════════════════════════════════════════════════════════
+function getBookings() {
+  try { return JSON.parse(localStorage.getItem('pp_bookings') || '[]') } catch(e) { return [] }
+}
+function saveBookings(b) { localStorage.setItem('pp_bookings', JSON.stringify(b)) }
+
+function getConfig() {
+  try { return JSON.parse(localStorage.getItem('pp_config') || '{"upi":"yourname@upi","name":"MyCricket","apikey":""}') }
+  catch(e) { return {upi:'yourname@upi',name:'MyCricket',apikey:''} }
+}
+function saveConfig() {
+  const cfg = {
+    upi: document.getElementById('cfg-upi').value || 'yourname@upi',
+    name: document.getElementById('cfg-name').value || 'MyCricket',
+    apikey: document.getElementById('cfg-apikey').value || ''
+  }
+  localStorage.setItem('pp_config', JSON.stringify(cfg))
+  toast('Config saved ✓','ok')
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TEAM COLORS + ZONES (your manual config per team)
+// ═══════════════════════════════════════════════════════════════
+const TEAM_META = {
+  'Mumbai Indians':          { color:'#004BA0', abbr:'MI'   },
+  'Kolkata Knight Riders':   { color:'#3A225D', abbr:'KKR'  },
+  'Royal Challengers Bengaluru': { color:'#E32636', abbr:'RCB' },
+  'Royal Challengers Bangalore': { color:'#E32636', abbr:'RCB' },
+  'Rajasthan Royals':        { color:'#254AA5', abbr:'RR'   },
+  'Chennai Super Kings':     { color:'#F7A721', abbr:'CSK'  },
+  'Delhi Capitals':          { color:'#17479E', abbr:'DC'   },
+  'Sunrisers Hyderabad':     { color:'#F7621E', abbr:'SRH'  },
+  'Punjab Kings':            { color:'#A41D23', abbr:'PBKS' },
+  'Gujarat Titans':          { color:'#1C4B27', abbr:'GT'   },
+  'Lucknow Super Giants':    { color:'#75CCDF', abbr:'LSG'  },
+}
+
+// Default zones applied to every match — you can customise per match in admin later
+const DEFAULT_ZONES = [
+  {id:'premium', name:'Premium Box',  price:3200, avail:50 },
+  {id:'stand_a', name:'Stand A',      price:1600, avail:300},
+  {id:'stand_b', name:'Stand B',      price:1600, avail:280},
+  {id:'south',   name:'South Stand',  price:1200, avail:500},
+  {id:'gen_e',   name:'General East', price:800,  avail:1000},
+  {id:'gen_w',   name:'General West', price:800,  avail:950},
+]
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let sel = { match:null, zone:null, qty:2, bookingId:null, total:0, filter:'all' }
+let MATCHES = [] // filled by API
+
+// ═══════════════════════════════════════════════════════════════
+// LIVE API FETCH — CricketData.org (free, 100k hits/hr)
+// Sign up free: https://cricketdata.org/signup.aspx
+// ═══════════════════════════════════════════════════════════════
+async function fetchLiveMatches() {
+  const grid = document.getElementById('matches-grid')
+  const cfg = getConfig()
+
+  // No API key → show static fallback
+  if (!cfg.apikey) {
+    showApiKeyPrompt()
+    useFallbackMatches()
+    return
+  }
+
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--muted2);">
+      <div style="font-size:28px;margin-bottom:12px;">🏏</div>
+      <div style="font-size:14px;">Fetching live IPL matches...</div>
+    </div>`
+
+  try {
+    // CricketData.org — currentMatches returns live + upcoming IPL matches
+    const res = await fetch(`https://api.cricapi.com/v1/currentMatches?apikey=${cfg.apikey}&offset=0`)
+    const data = await res.json()
+
+    if (data.status !== 'success') throw new Error(data.reason || 'API error')
+
+    // Filter only IPL matches
+    const iplMatches = (data.data || []).filter(m =>
+      m.name && (
+        m.name.toLowerCase().includes('ipl') ||
+        m.series_id === 'd5a498c8-7596-4b93-8ab0-e0efc3345312' || // IPL 2025 series ID
+        (m.teamInfo && m.teamInfo.some(t => Object.keys(TEAM_META).includes(t.name)))
+      )
+    )
+
+    if (!iplMatches.length) {
+      // No IPL matches live right now — try series schedule
+      await fetchIPLSchedule(cfg.apikey)
+      return
+    }
+
+    MATCHES = iplMatches.map(m => parseAPIMatch(m))
+    renderMatches()
+
+  } catch(err) {
+    console.error('API error:', err)
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;background:rgba(255,64,64,0.08);border:1px solid rgba(255,64,64,0.2);
+        border-radius:12px;padding:20px;text-align:center;color:var(--red);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">API fetch failed</div>
+        <div style="font-size:12px;color:var(--muted2);">${err.message} — check your API key in Admin → Config</div>
+      </div>`
+    useFallbackMatches()
+  }
+}
+
+async function fetchIPLSchedule(apikey) {
+  // IPL 2025 series ID on CricketData.org
+  const IPL_SERIES_ID = 'd5a498c8-7596-4b93-8ab0-e0efc3345312'
+  try {
+    const res = await fetch(`https://api.cricapi.com/v1/series_info?apikey=${apikey}&id=${IPL_SERIES_ID}`)
+    const data = await res.json()
+    if (data.status !== 'success') throw new Error('Series fetch failed')
+
+    const matchList = data.data?.matchList || []
+    // Only upcoming matches
+    const upcoming = matchList.filter(m => new Date(m.dateTimeGMT) > new Date())
+    MATCHES = upcoming.slice(0,10).map(m => parseAPIMatch(m))
+    renderMatches()
+  } catch(e) {
+    useFallbackMatches()
+  }
+}
+
+function parseAPIMatch(m) {
+  // Parse API match object into our internal format
+  const t1 = m.teamInfo?.[0] || {}
+  const t2 = m.teamInfo?.[1] || {}
+  const home = t1.name || m.teams?.[0] || 'Team A'
+  const away = t2.name || m.teams?.[1] || 'Team B'
+  const homeMeta = TEAM_META[home] || { color:'#4A5568', abbr: home.slice(0,3).toUpperCase() }
+  const awayMeta = TEAM_META[away] || { color:'#718096', abbr: away.slice(0,3).toUpperCase() }
+
+  // Parse date/time
+  const dt = m.dateTimeGMT ? new Date(m.dateTimeGMT) : new Date()
+  const IST = new Date(dt.getTime() + 5.5*60*60*1000)
+  const dateStr = IST.toISOString().slice(0,10)
+  const timeStr = IST.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})
+
+  return {
+    id: m.id || ('m_'+Math.random().toString(36).slice(2,8)),
+    home, home_a: homeMeta.abbr, home_color: homeMeta.color,
+    away, away_a: awayMeta.abbr, away_color: awayMeta.color,
+    venue: m.venue || 'India',
+    date: dateStr,
+    time: timeStr.toUpperCase(),
+    status: m.matchStarted ? 'live' : 'upcoming',
+    live_score: m.matchStarted ? buildLiveScore(m) : null,
+    zones: JSON.parse(JSON.stringify(DEFAULT_ZONES)) // deep copy
+  }
+}
+
+function buildLiveScore(m) {
+  if (!m.score || !m.score.length) return null
+  return m.score.map(s => `${s.inning}: ${s.r}/${s.w} (${s.o} ov)`).join(' | ')
+}
+
+function showApiKeyPrompt() {
+  const grid = document.getElementById('matches-grid')
+  grid.insertAdjacentHTML('beforebegin', `
+    <div style="background:rgba(240,255,65,0.06);border:1px solid rgba(240,255,65,0.25);
+      border-radius:12px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start;">
+      <span style="font-size:22px;flex-shrink:0;">🔑</span>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--accent);margin-bottom:4px;">Add your free CricketData API key to show live IPL matches</div>
+        <div style="font-size:12px;color:var(--muted2);line-height:1.7;">
+          1. Sign up free at <a href="https://cricketdata.org/signup.aspx" target="_blank" style="color:var(--accent);">cricketdata.org/signup.aspx</a><br>
+          2. Copy your API key → go to <strong style="color:var(--text)">Admin tab → Config → API Key</strong> → Save<br>
+          3. Matches auto-load from live IPL schedule ⚡
+        </div>
+      </div>
+    </div>`)
+}
+
+function useFallbackMatches() {
+  // Static fallback if no API key or API fails
+  MATCHES = STATIC_MATCHES
+  renderMatches()
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER MATCHES
+// ═══════════════════════════════════════════════════════════════
+function renderMatches() {
+  const el = document.getElementById('matches-grid')
+  if (!MATCHES.length) {
+    el.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted2);">No upcoming IPL matches found.</div>`
+    return
+  }
+  el.innerHTML = MATCHES.map(m => {
+    const minPrice = Math.min(...m.zones.map(z=>z.price))
+    const totalAvail = m.zones.reduce((a,z)=>a+z.avail,0)
+    const isHot = totalAvail < 2000
+    const isLive = m.status === 'live'
+    return `
+    <div class="match-card" style="--c1:${m.home_color};--c2:${m.away_color}" onclick="openBooking('${m.id}')">
+      <div class="card-date">
+        <span>${isLive ? '' : fmtDate(m.date)+' · '}${m.time}</span>
+        <span class="badge ${isLive?'badge-hot':isHot?'badge-hot':'badge-ok'}">${isLive?'🔴 LIVE':isHot?'🔥 Hot':'✅ Available'}</span>
+      </div>
+      ${isLive && m.live_score ? `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);margin-bottom:10px;line-height:1.6;">${m.live_score}</div>` : ''}
+      <div class="teams">
+        <div class="team-badge" style="background:${m.home_color}20;color:${m.home_color}">${m.home_a}</div>
+        <div class="team-info"><div class="team-name">${m.home}</div><div class="team-city">Home</div></div>
+        <div class="vs-tag">VS</div>
+        <div class="team-info" style="text-align:right"><div class="team-name">${m.away}</div><div class="team-city">Away</div></div>
+        <div class="team-badge" style="background:${m.away_color}20;color:${m.away_color}">${m.away_a}</div>
+      </div>
+      <div class="card-venue">📍 ${m.venue}</div>
+      <div class="card-footer">
+        <div><div class="price-from">From</div><div class="price-val" style="color:var(--accent)">₹${minPrice.toLocaleString('en-IN')}</div></div>
+        <button class="btn-book" onclick="event.stopPropagation();openBooking('${m.id}')">Book Now</button>
+      </div>
+    </div>`
+  }).join('')
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BOOKING MODAL
+// ═══════════════════════════════════════════════════════════════
+function openBooking(matchId) {
+  sel.match = MATCHES.find(m=>m.id===matchId)
+  sel.zone = null
+  sel.qty = 2
+  document.getElementById('qn').textContent = 2
+  document.getElementById('f-name').value = ''
+  document.getElementById('f-phone').value = ''
+  document.getElementById('f-email').value = ''
+  document.getElementById('utr-input').value = ''
+  document.getElementById('order-preview').style.display = 'none'
+  showMStep(1)
+  document.getElementById('modal-title').textContent = `${sel.match.home_a} vs ${sel.match.away_a}`
+  renderZones()
+  document.getElementById('booking-overlay').classList.add('open')
+}
+
+function closeModal() {
+  document.getElementById('booking-overlay').classList.remove('open')
+}
+
+function showMStep(n) {
+  [1,2,3].forEach(i=>document.getElementById('mstep'+i).style.display=i===n?'block':'none')
+}
+
+function renderZones() {
+  const el = document.getElementById('modal-zones')
+  el.innerHTML = sel.match.zones.map(z=>`
+    <div class="zone ${z.avail<=0?'soldout':''}" id="zone-${z.id}" onclick="selZone('${z.id}')">
+      <div class="zone-name">${z.name}</div>
+      <div class="zone-p">₹${z.price.toLocaleString('en-IN')}</div>
+      <div class="zone-left">${z.avail<=0?'Sold Out':z.avail+' seats left'}</div>
+    </div>`).join('')
+}
+
+function selZone(zoneId) {
+  sel.zone = sel.match.zones.find(z=>z.id===zoneId)
+  document.querySelectorAll('.zone').forEach(el=>el.classList.remove('active'))
+  document.getElementById('zone-'+zoneId).classList.add('active')
+  updateOrderPreview()
+}
+
+function chQty(d) {
+  sel.qty = Math.max(1,Math.min(8,sel.qty+d))
+  document.getElementById('qn').textContent = sel.qty
+  updateOrderPreview()
+}
+
+function updateOrderPreview() {
+  if (!sel.zone) return
+  const sub = sel.zone.price * sel.qty
+  const fee = 150  // flat ₹150 convenience fee per booking
+  const gst = Math.round((sub+fee)*0.18)
+  sel.total = sub+fee+gst
+  document.getElementById('op-zone').textContent = `${sel.zone.name} × ${sel.qty}`
+  document.getElementById('op-unit').textContent = `₹${sub.toLocaleString('en-IN')}`
+  document.getElementById('op-fee').textContent = `₹150`
+  document.getElementById('op-gst').textContent = `₹${gst.toLocaleString('en-IN')}`
+  document.getElementById('op-total').textContent = `₹${sel.total.toLocaleString('en-IN')}`
+  document.getElementById('order-preview').style.display = 'block'
+}
+
+function proceedToPayment() {
+  const name = document.getElementById('f-name').value.trim()
+  const phone = document.getElementById('f-phone').value.trim()
+  if (!sel.zone) return toast('Please select a zone','err')
+  if (!name) return toast('Enter your name','err')
+  if (!/^\d{10}$/.test(phone)) return toast('Enter valid 10-digit mobile','err')
+
+  const cfg = getConfig()
+  document.getElementById('pay-amount').textContent = `₹${sel.total.toLocaleString('en-IN')}`
+  document.getElementById('pay-upi-id').textContent = cfg.upi
+
+  // Generate UPI payment QR
+  const upiUrl = `upi://pay?pa=${cfg.upi}&pn=${encodeURIComponent(cfg.name)}&am=${sel.total}&cu=INR&tn=MyCricket-IPL-Ticket`
+  document.getElementById('upi-qr').innerHTML = ''
+  new QRCode(document.getElementById('upi-qr'), {
+    text: upiUrl, width:160, height:160,
+    colorDark:'#000000', colorLight:'#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  })
+
+  showMStep(2)
+}
+
+function submitBooking() {
+  const utr = document.getElementById('utr-input').value.trim()
+  if (!utr || utr.length < 6) return toast('Enter your UTR / Transaction ID','err')
+
+  const bookingId = 'BKG-' + Math.random().toString(36).slice(2,10).toUpperCase()
+  const booking = {
+    id: bookingId,
+    match_id: sel.match.id,
+    match_name: `${sel.match.home_a} vs ${sel.match.away_a}`,
+    match_full: `${sel.match.home} vs ${sel.match.away}`,
+    venue: sel.match.venue,
+    date: sel.match.date,
+    time: sel.match.time,
+    zone: sel.zone.name,
+    zone_id: sel.zone.id,
+    qty: sel.qty,
+    unit_price: sel.zone.price,
+    total: sel.total,
+    buyer_name: document.getElementById('f-name').value.trim(),
+    buyer_phone: document.getElementById('f-phone').value.trim(),
+    buyer_email: document.getElementById('f-email').value.trim(),
+    utr: utr,
+    status: 'pending',
+    created_at: new Date().toISOString(),
+    tickets: []
+  }
+
+  const bookings = getBookings()
+  bookings.unshift(booking)
+  saveBookings(bookings)
+
+  sel.bookingId = bookingId
+  document.getElementById('pend-bid').textContent = bookingId
+  showMStep(3)
+  startDeliveryTimer()
+  toast(`Booking ${bookingId} submitted!`,'ok')
+  renderAdminBookings()
+}
+
+let deliveryTimerInterval = null
+function startDeliveryTimer() {
+  clearInterval(deliveryTimerInterval)
+  let secs = 15 * 60
+  const el = document.getElementById('delivery-timer')
+  deliveryTimerInterval = setInterval(() => {
+    secs--
+    if (secs <= 0) { clearInterval(deliveryTimerInterval); if(el) el.textContent = 'Any moment now ⚡'; return }
+    const m = Math.floor(secs/60)
+    const s = secs%60
+    if(el) el.textContent = `${m}:${s.toString().padStart(2,'0')}`
+  }, 1000)
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════════════════════════════
+function renderAdminBookings() {
+  const all = getBookings()
+  const filtered = sel.filter==='all' ? all : all.filter(b=>b.status===sel.filter)
+
+  // Stats
+  document.getElementById('stat-pending').textContent = all.filter(b=>b.status==='pending').length
+  document.getElementById('stat-confirmed').textContent = all.filter(b=>b.status==='confirmed').length
+  document.getElementById('stat-total').textContent = all.length
+  const rev = all.filter(b=>b.status==='confirmed').reduce((s,b)=>s+b.total,0)
+  document.getElementById('stat-revenue').textContent = '₹'+rev.toLocaleString('en-IN')
+
+  const el = document.getElementById('bookings-list')
+  if (!filtered.length) {
+    el.innerHTML = '<div class="empty-admin">No bookings found 🏏</div>'
+    return
+  }
+
+  el.innerHTML = filtered.map(b => `
+    <div class="booking-row">
+      <div>
+        <div class="bid">${b.id}</div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:3px;font-family:'JetBrains Mono',monospace">${fmtDate(b.date)}</div>
+      </div>
+      <div class="booking-info">
+        <div class="booking-match">${b.match_name} · ${b.zone} × ${b.qty}</div>
+        <div class="booking-meta">${b.buyer_name} · ${b.buyer_phone} · <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent)">₹${b.total.toLocaleString('en-IN')}</span></div>
+        <div class="booking-utr">UTR: ${b.utr}</div>
+      </div>
+      <div><span class="status-badge s-${b.status}">${b.status.toUpperCase()}</span></div>
+      <div class="action-btns">
+        ${b.status==='pending' ? `
+          <button class="btn-confirm" onclick="confirmBooking('${b.id}')">✅ Confirm</button>
+          <button class="btn-reject" onclick="rejectBooking('${b.id}')">❌ Reject</button>
+        ` : ''}
+        ${b.status==='confirmed' ? `
+          <button class="btn-view" onclick="viewTicket('${b.id}')">🎟 View Ticket</button>
+          <button class="btn-confirm" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.3);color:#25D366" onclick="waShare('${b.id}')">📲 WhatsApp</button>
+        ` : ''}
+        ${b.status==='rejected' ? `<span style="font-size:12px;color:var(--muted)">Rejected</span>` : ''}
+      </div>
+    </div>`).join('')
+}
+
+function confirmBooking(id) {
+  const bookings = getBookings()
+  const b = bookings.find(x=>x.id===id)
+  if (!b) return
+
+  // Generate seat tickets
+  const baseRow = Math.floor(Math.random()*30)+1
+  const baseSeat = Math.floor(Math.random()*20)+1
+  b.tickets = Array.from({length:b.qty},(_,i)=>({
+    ticket_id: 'TKT-'+Math.random().toString(36).slice(2,10).toUpperCase(),
+    row: baseRow, seat: baseSeat+i, zone: b.zone
+  }))
+  b.status = 'confirmed'
+  b.confirmed_at = new Date().toISOString()
+  saveBookings(bookings)
+  toast(`✅ ${id} confirmed — ticket issued!`,'ok')
+  renderAdminBookings()
+}
+
+function rejectBooking(id) {
+  if (!confirm(`Reject booking ${id}? This will mark it as rejected.`)) return
+  const bookings = getBookings()
+  const b = bookings.find(x=>x.id===id)
+  if (!b) return
+  b.status = 'rejected'
+  saveBookings(bookings)
+  toast(`Booking ${id} rejected`,'err')
+  renderAdminBookings()
+}
+
+function filterBookings(f, btn) {
+  sel.filter = f
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'))
+  btn.classList.add('active')
+  renderAdminBookings()
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TICKET VIEWER
+// ═══════════════════════════════════════════════════════════════
+function viewTicket(id) {
+  const bookings = getBookings()
+  const b = bookings.find(x=>x.id===id)
+  if (!b) return
+
+  document.getElementById('tm-sub').textContent = `${b.match_name} · ${b.venue}`
+  document.getElementById('tm-detail').innerHTML = `
+    <div class="td-row"><span>Match</span><span>${b.match_full}</span></div>
+    <div class="td-row"><span>Venue</span><span>${b.venue}</span></div>
+    <div class="td-row"><span>Date</span><span>${fmtDate(b.date)} · ${b.time}</span></div>
+    <div class="td-row"><span>Zone</span><span>${b.zone}</span></div>
+    <div class="td-row"><span>Tickets</span><span>${b.qty}</span></div>
+    <div class="td-row"><span>Buyer</span><span>${b.buyer_name} · ${b.buyer_phone}</span></div>
+    <div class="td-row"><span>Booking ID</span><span style="font-family:'JetBrains Mono',monospace;color:var(--accent)">${b.id}</span></div>
+  `
+  document.getElementById('tm-ticket-ids').innerHTML =
+    b.tickets.map(t=>`<div class="tkt-id-item">🎟 ${t.ticket_id} — Row ${t.row} · Seat ${t.seat}</div>`).join('')
+
+  // QR encodes the booking data
+  const qrData = JSON.stringify({
+    booking_id: b.id, match: b.match_name, zone: b.zone,
+    qty: b.qty, buyer: b.buyer_name, phone: b.buyer_phone,
+    tickets: b.tickets, confirmed_at: b.confirmed_at
+  })
+  document.getElementById('ticket-qr-div').innerHTML = ''
+  new QRCode(document.getElementById('ticket-qr-div'), {
+    text: qrData, width:200, height:200,
+    colorDark:'#000000', colorLight:'#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  })
+
+  document.getElementById('ticket-overlay').classList.add('open')
+}
+
+function waShare(id) {
+  const bookings = getBookings()
+  const b = bookings.find(x=>x.id===id)
+  if (!b) return
+  const msg = `✅ *MyCricket — Your Ticket is Confirmed!*\n\n` +
+    `🏏 Match: ${b.match_full}\n` +
+    `📍 Venue: ${b.venue}\n` +
+    `📅 Date: ${fmtDate(b.date)} · ${b.time}\n` +
+    `🎟 Zone: ${b.zone} × ${b.qty}\n` +
+    `🆔 Booking ID: *${b.id}*\n\n` +
+    `Ticket IDs:\n${b.tickets.map(t=>`• ${t.ticket_id} — Row ${t.row}, Seat ${t.seat}`).join('\n')}\n\n` +
+    `Show your Booking ID at the gate. Enjoy the match! 🏆\n` +
+    `_MyCricket — Authorised Ticket Reseller_`
+  window.open(`https://wa.me/91${b.buyer_phone}?text=${encodeURIComponent(msg)}`, '_blank')
+}
+
+function closeTicketModal() {
+  document.getElementById('ticket-overlay').classList.remove('open')
+}
+
+// ═══════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'))
+  document.querySelectorAll('.nav-tab').forEach(el=>el.classList.remove('active'))
+  document.getElementById('page-'+p).classList.add('active')
+  event.target.classList.add('active')
+  if (p==='admin') {
+    const cfg = getConfig()
+    document.getElementById('cfg-upi').value = cfg.upi
+    document.getElementById('cfg-name').value = cfg.name
+    document.getElementById('cfg-apikey').value = cfg.apikey || ''
+    renderAdminBookings()
+  }
+}
+
+function fmtDate(d) {
+  return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})
+}
+
+function toast(msg, type='ok') {
+  const el = document.getElementById('toast')
+  el.textContent = msg
+  el.className = `toast ${type} show`
+  setTimeout(()=>el.classList.remove('show'), 3500)
+}
+
+// Close overlays on backdrop click
+document.getElementById('booking-overlay').addEventListener('click', e => {
+  if (e.target.id==='booking-overlay') closeModal()
+})
+document.getElementById('ticket-overlay').addEventListener('click', e => {
+  if (e.target.id==='ticket-overlay') closeTicketModal()
+})
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+fetchLiveMatches() // loads live IPL matches from CricketData.org API
+</script>
+</body>
+</html>
