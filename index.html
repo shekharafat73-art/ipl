@@ -1350,8 +1350,8 @@ async function submitBooking() {
 
   // ─── Save to Supabase (replace with your real URL and anon key) ───
   try {
-    const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
-    const SUPABASE_KEY = 'YOUR_ANON_KEY';
+    const SUPABASE_URL = 'postgresql://postgres:arafatisgoat123#@db.bivccpgsxffdwxyoryaj.supabase.co:5432/postgres';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpdmNjcGdzeGZmZHd4eW9yeWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNTU3NDAsImV4cCI6MjA4OTczMTc0MH0.jnh98dZ4OxQ4hq_iNPvKjjrul1H5vFd0LblaBC5tZf4';
     
     await fetch(`${SUPABASE_URL}/rest/v1/bookings`, {
       method: 'POST',
