@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TicketZone Admin — Match Manager</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{
+  --gold:#f0b429;--gold-light:#ffe066;--gold-dim:rgba(240,180,41,0.1);
+  --cyan:#00e5ff;--cyan-dim:rgba(0,229,255,0.08);
+  --dark:#000;--dark2:#080808;--dark3:#0d0d0d;--dark4:#141414;--dark5:#1a1a1a;
+  --text:#f0f0f0;--muted:rgba(240,240,240,0.45);
+  --red:#ff3b3b;--green:#00e676;--border:rgba(0,229,255,0.12);--border-gold:rgba(240,180,41,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--gold)}
+
+/* ── LOGIN ── */
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,rgba(0,229,255,0.04),#000)}
+.login-box{background:var(--dark3);border:1px solid var(--border);padding:48px 40px;width:360px;text-align:center;position:relative}
+.login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--cyan),var(--gold),transparent)}
+.login-icon{font-size:40px;margin-bottom:16px}
+.login-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+.f-group{margin-bottom:16px;text-align:left}
+.f-label{font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;display:block;margin-bottom:6px}
+.f-input{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:12px 14px;outline:none;transition:all .2s}
+.f-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,0.08)}
+.f-input::placeholder{color:rgba(255,255,255,0.18)}
+.btn-gold{width:100%;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:4px;color:#000;background:linear-gradient(135deg,var(--gold-light),var(--gold));border:none;padding:14px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all .3s;font-weight:900}
+.btn-gold:hover{box-shadow:0 0 28px rgba(240,180,41,0.4);transform:translateY(-1px)}
+.login-err{font-size:13px;color:var(--red);margin-top:10px;display:none}
+
+/* ── MAIN LAYOUT ── */
+#adminApp{display:none}
+.topbar{background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar::after{content:'';position:absolute;bottom:0;left:5%;right:5%;height:1px;background:linear-gradient(to right,transparent,rgba(0,229,255,0.2),var(--gold-dim),transparent)}
+.topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-url{font-size:12px;color:var(--muted);letter-spacing:1px}
+.btn-sm{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:2px;padding:7px 16px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;text-transform:uppercase;transition:all .2s}
+.btn-sm:hover{color:var(--cyan);border-color:var(--cyan)}
+.btn-sm.danger{border-color:rgba(255,59,59,0.3);color:rgba(255,100,100,0.7)}
+.btn-sm.danger:hover{border-color:var(--red);color:var(--red)}
+
+.main{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 60px)}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--dark2);border-right:1px solid var(--border);padding:24px 0}
+.sidebar-section{margin-bottom:8px}
+.sidebar-title{font-family:'Rajdhani',sans-serif;font-size:10px;letter-spacing:4px;color:rgba(255,255,255,0.2);text-transform:uppercase;padding:8px 20px;margin-bottom:4px}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all .2s;font-size:14px;color:var(--muted);border-left:2px solid transparent}
+.sidebar-item:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.sidebar-item.active{color:var(--cyan);background:rgba(0,229,255,0.05);border-left-color:var(--cyan)}
+.sidebar-item .icon{font-size:16px;width:20px;text-align:center}
+.sidebar-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+
+/* ── CONTENT ── */
+.content{padding:28px;overflow-y:auto}
+.page{display:none}
+.page.active{display:block}
+
+/* Stats Row */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px}
+.stat-card{background:var(--dark3);border:1px solid var(--border);padding:16px;text-align:center;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-card.total::before{background:linear-gradient(to right,var(--cyan),var(--gold))}
+.stat-card.pending::before{background:#f59e0b}
+.stat-card.paid::before{background:#8b5cf6}
+.stat-card.delivered::before{background:var(--green)}
+.stat-card.revenue::before{background:var(--gold)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;margin-bottom:3px}
+.stat-card.total .stat-num{background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-card.pending .stat-num{color:#fbbf24}
+.stat-card.paid .stat-num{color:#a78bfa}
+.stat-card.delivered .stat-num{color:var(--green)}
+.stat-card.revenue .stat-num{color:var(--gold)}
+.stat-label{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+
+/* Page header */
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px}
+.page-title span{color:var(--cyan)}
+
+/* ── MATCH MANAGER ── */
+.matches-list{display:grid;gap:12px}
+.match-row{background:var(--dark3);border:1px solid var(--border);padding:0;overflow:hidden;transition:border-color .2s}
+.match-row:hover{border-color:rgba(0,229,255,0.25)}
+.match-row-header{display:flex;align-items:center;padding:16px 20px;gap:16px;cursor:pointer;user-select:none}
+.match-row-header:hover{background:rgba(255,255,255,0.02)}
+.match-teams-mini{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;flex:1}
+.match-meta-mini{font-size:12px;color:var(--muted);flex:1}
+.match-status-badge{font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:2px;padding:3px 10px;border-radius:2px;text-transform:uppercase;font-weight:700}
+.match-status-badge.active{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+.match-status-badge.soldout{background:rgba(255,59,59,0.1);color:var(--red);border:1px solid rgba(255,59,59,0.2)}
+.match-row-expand{color:var(--muted);font-size:18px;transition:transform .3s}
+.match-row.open .match-row-expand{transform:rotate(180deg)}
+.match-edit-form{display:none;padding:20px;border-top:1px solid var(--border);background:rgba(0,0,0,0.3)}
+.match-row.open .match-edit-form{display:block}
+
+.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.edit-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* Price tiers */
+.price-tiers{margin:16px 0}
+.price-tiers-title{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.price-tiers-title::after{content:'BMS price → auto +₹300';font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:400}
+.tiers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.tier-item{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);padding:12px}
+.tier-name-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tier-name{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--text)}
+.tier-remove{background:none;border:none;color:rgba(255,100,100,0.4);cursor:pointer;font-size:14px;padding:0}
+.tier-remove:hover{color:var(--red)}
+.tier-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tier-input-wrap{position:relative}
+.tier-input-label{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.tier-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text);font-size:14px;padding:8px 10px;outline:none;font-family:'Rajdhani',sans-serif;font-weight:600}
+.tier-input:focus{border-color:var(--gold)}
+.tier-total{margin-top:6px;font-size:11px;color:var(--gold);text-align:right;font-weight:600}
+
+.add-tier-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(0,229,255,0.04);border:1px dashed rgba(0,229,255,0.2);padding:12px;cursor:pointer;color:var(--cyan);font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:all .2s;width:100%}
+.add-tier-btn:hover{background:rgba(0,229,255,0.08);border-color:var(--cyan)}
+
+.avail-row{display:flex;align-items:center;gap:16px;margin:12px 0;padding:12px 16px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06)}
+.avail-label{font-size:13px;color:var(--muted);flex:1}
+.toggle-wrap{display:flex;align-items:center;gap:10px}
+.toggle{width:44px;height:24px;background:rgba(255,255,255,0.1);border-radius:12px;position:relative;cursor:pointer;transition:background .2s}
+.toggle.on{background:var(--green)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,0.3)}
+.toggle.on::after{left:23px}
+.avail-pct{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700}
+
+.match-action-row{display:flex;gap:10px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)}
+.btn-save{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;color:#000;background:linear-gradient(135deg,var(--gold-light),var(--gold));border:none;padding:11px 28px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);transition:all .2s}
+.btn-save:hover{box-shadow:0 0 20px rgba(240,180,41,0.4)}
+.btn-delete{font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:2px;padding:11px 20px;border:1px solid rgba(255,59,59,0.2);background:transparent;color:rgba(255,100,100,0.6);cursor:pointer;text-transform:uppercase;transition:all .2s}
+.btn-delete:hover{border-color:var(--red);color:var(--red);background:rgba(255,59,59,0.05)}
+.btn-cancel{font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:2px;padding:11px 20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;text-transform:uppercase;transition:all .2s;margin-left:auto}
+.btn-cancel:hover{color:var(--text);border-color:rgba(255,255,255,0.2)}
+
+/* Add Match Panel */
+.add-match-panel{background:var(--dark3);border:1px solid var(--border);padding:28px;margin-bottom:20px;display:none;position:relative}
+.add-match-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--green),transparent)}
+.add-match-panel.show{display:block}
+
+/* ── BOOKINGS TABLE ── */
+.filter-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-btn{font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:2px;padding:6px 14px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;text-transform:uppercase;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--cyan-dim);border-color:var(--cyan);color:var(--cyan)}
+.bookings-table{width:100%;border-collapse:collapse;font-size:13px}
+.bookings-table th{font-family:'Rajdhani',sans-serif;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 12px;background:rgba(240,180,41,0.04);border-bottom:1px solid var(--border-gold);text-align:left;white-space:nowrap}
+.bookings-table td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--muted);vertical-align:middle}
+.bookings-table tr:hover td{background:rgba(255,255,255,0.015)}
+.bid{font-family:monospace;color:var(--gold-light);font-size:12px;letter-spacing:1px}
+.pill{display:inline-block;padding:3px 9px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:2px}
+.pill.pending{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.pill.confirmed{background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+.pill.paid{background:rgba(139,92,246,.12);color:#a78bfa;border:1px solid rgba(139,92,246,.2)}
+.pill.delivered{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+.pill.cancelled{background:rgba(255,59,59,.12);color:#f87171;border:1px solid rgba(255,59,59,.2)}
+.status-sel{background:var(--dark5);border:1px solid var(--border);color:var(--text);font-size:11px;padding:5px 8px;cursor:pointer;outline:none;font-family:'Inter',sans-serif}
+.note-inp{background:var(--dark5);border:1px solid var(--border);color:var(--text);font-size:11px;padding:5px 8px;width:130px;font-family:'Inter',sans-serif;outline:none}
+.note-inp:focus{border-color:var(--gold)}
+.upd-btn{font-family:'Rajdhani',sans-serif;font-size:10px;letter-spacing:1px;background:var(--gold-dim);border:1px solid var(--border-gold);color:var(--gold);padding:5px 10px;cursor:pointer;text-transform:uppercase;transition:all .2s;white-space:nowrap}
+.upd-btn:hover{background:var(--gold);color:#000}
+.empty-state{text-align:center;padding:60px;color:var(--muted)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#000;font-family:'Rajdhani',sans-serif;font-size:14px;letter-spacing:2px;font-weight:700;padding:12px 28px;z-index:999;transition:transform .3s cubic-bezier(.16,1,.3,1);clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.green{background:var(--green)}
+.toast.red{background:var(--red);color:#fff}
+
+/* ── SETTINGS ── */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.setting-card{background:var(--dark3);border:1px solid var(--border);padding:24px}
+.setting-card h4{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;color:var(--cyan);margin-bottom:16px;text-transform:uppercase}
+.setting-row{margin-bottom:14px}
+
+@media(max-width:900px){
+  .main{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .settings-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="loginPage">
+  <div class="login-box">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">Admin Panel</div>
+    <div class="login-sub">TicketZone India · Match Manager</div>
+    <div class="f-group">
+      <label class="f-label">Password</label>
+      <input type="password" class="f-input" id="passInput" placeholder="Enter admin password" onkeypress="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-gold" onclick="doLogin()">Login →</button>
+    <div class="login-err" id="loginErr">❌ Wrong password. Try again.</div>
+  </div>
+</div>
+
+<!-- ── ADMIN APP ── -->
+<div id="adminApp">
+  <div class="topbar">
+    <div class="topbar-logo">🏏 TicketZone Admin</div>
+    <div class="topbar-right">
+      <span class="topbar-url" id="siteUrlDisplay">ipl.shekharafat73.workers.dev</span>
+      <button class="btn-sm" onclick="window.open('https://ipl.shekharafat73.workers.dev','_blank')">🌐 View Site</button>
+      <button class="btn-sm danger" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Main</div>
+        <div class="sidebar-item active" onclick="showPage('dashboard',this)">
+          <span class="icon">📊</span> Dashboard
+        </div>
+        <div class="sidebar-item" onclick="showPage('matches',this)">
+          <span class="icon">🏏</span> Matches & Prices
+        </div>
+        <div class="sidebar-item" onclick="showPage('bookings',this)">
+          <span class="icon">🎟</span> Bookings
+          <span class="sidebar-badge" id="pendingBadge">0</span>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Config</div>
+        <div class="sidebar-item" onclick="showPage('settings',this)">
+          <span class="icon">⚙️</span> Settings
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- ══ DASHBOARD ══ -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div class="page-title">Dashboard <span>Overview</span></div>
+          <button class="btn-sm" onclick="loadAll()">↺ Refresh</button>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card total"><div class="stat-num" id="ds-total">0</div><div class="stat-label">Total Bookings</div></div>
+          <div class="stat-card pending"><div class="stat-num" id="ds-pending">0</div><div class="stat-label">Pending</div></div>
+          <div class="stat-card paid"><div class="stat-num" id="ds-paid">0</div><div class="stat-label">Paid</div></div>
+          <div class="stat-card delivered"><div class="stat-num" id="ds-delivered">0</div><div class="stat-label">Delivered</div></div>
+          <div class="stat-card revenue"><div class="stat-num" id="ds-revenue">₹0</div><div class="stat-label">Revenue</div></div>
+        </div>
+        <!-- Recent bookings -->
+        <div style="background:var(--dark3);border:1px solid var(--border);padding:20px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin-bottom:16px;color:var(--gold)">Recent Bookings</div>
+          <div id="recentBookings"><div class="empty-state">Loading...</div></div>
+        </div>
+      </div>
+
+      <!-- ══ MATCHES & PRICES ══ -->
+      <div class="page" id="page-matches">
+        <div class="page-header">
+          <div class="page-title">Matches <span>&</span> Prices</div>
+          <button class="btn-gold" style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;padding:10px 24px;border:none;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)" onclick="toggleAddPanel()">+ Add Match</button>
+        </div>
+
+        <!-- BMS Tip -->
+        <div style="background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.15);padding:12px 16px;margin-bottom:20px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px">
+          <span>💡</span>
+          <span>BookMyShow ya Paytm Insider se price dekho → BMS Price daalo → <strong style="color:var(--gold)">+₹300 auto add</strong> ho jaayega website pe</span>
+        </div>
+
+        <!-- Add Match Form -->
+        <div class="add-match-panel" id="addMatchPanel">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin-bottom:20px;color:var(--green)">➕ New Match</div>
+          <div class="edit-grid">
+            <div class="f-group"><label class="f-label">Team 1 Name</label><input class="f-input" id="new-t1" placeholder="e.g. MI"></div>
+            <div class="f-group"><label class="f-label">Team 1 Emoji</label><input class="f-input" id="new-f1" placeholder="🔵"></div>
+            <div class="f-group"><label class="f-label">Team 2 Name</label><input class="f-input" id="new-t2" placeholder="e.g. CSK"></div>
+            <div class="f-group"><label class="f-label">Team 2 Emoji</label><input class="f-input" id="new-f2" placeholder="🟡"></div>
+          </div>
+          <div class="edit-grid">
+            <div class="f-group"><label class="f-label">Match Date</label><input class="f-input" id="new-date" placeholder="Mar 28, 2026"></div>
+            <div class="f-group"><label class="f-label">Match Time</label><input class="f-input" id="new-time" placeholder="7:30 PM"></div>
+          </div>
+          <div class="f-group"><label class="f-label">Venue</label><input class="f-input" id="new-venue" placeholder="Wankhede Stadium, Mumbai"></div>
+
+          <!-- Price tiers for new match -->
+          <div class="price-tiers">
+            <div class="price-tiers-title">Price Categories</div>
+            <div class="tiers-grid" id="newTiersGrid">
+              <!-- default tiers -->
+            </div>
+            <button class="add-tier-btn" style="margin-top:10px" onclick="addTier('new')">+ Add Category</button>
+          </div>
+
+          <div class="match-action-row" style="border-top:none;padding-top:0">
+            <button class="btn-save" onclick="saveNewMatch()">💾 Save Match</button>
+            <button class="btn-cancel" onclick="toggleAddPanel()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Matches List -->
+        <div class="matches-list" id="matchesList">
+          <div class="empty-state">Loading matches...</div>
+        </div>
+      </div>
+
+      <!-- ══ BOOKINGS ══ -->
+      <div class="page" id="page-bookings">
+        <div class="page-header">
+          <div class="page-title">All <span>Bookings</span></div>
+          <button class="btn-sm" onclick="loadBookings()">↺ Refresh</button>
+        </div>
+        <div class="filter-row" id="bookingFilters">
+          <button class="filter-btn active" onclick="filterBookings('all',this)">All</button>
+          <button class="filter-btn" onclick="filterBookings('pending',this)">🟡 Pending</button>
+          <button class="filter-btn" onclick="filterBookings('confirmed',this)">🔵 Confirmed</button>
+          <button class="filter-btn" onclick="filterBookings('paid',this)">🟣 Paid</button>
+          <button class="filter-btn" onclick="filterBookings('delivered',this)">✅ Delivered</button>
+          <button class="filter-btn" onclick="filterBookings('cancelled',this)">❌ Cancelled</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="bookings-table">
+            <thead><tr>
+              <th>Booking ID</th><th>Name</th><th>Phone</th><th>Match</th>
+              <th>Qty</th><th>Amount</th><th>UTR</th><th>Status</th>
+              <th>Note</th><th>Action</th>
+            </tr></thead>
+            <tbody id="bookingsBody"></tbody>
+          </table>
+          <div class="empty-state" id="bookingsEmpty" style="display:none">No bookings found.</div>
+        </div>
+      </div>
+
+      <!-- ══ SETTINGS ══ -->
+      <div class="page" id="page-settings">
+        <div class="page-header">
+          <div class="page-title">Settings <span>&</span> Config</div>
+        </div>
+        <div class="settings-grid">
+          <div class="setting-card">
+            <h4>💳 Payment</h4>
+            <div class="setting-row"><label class="f-label">UPI ID</label><input class="f-input" id="set-upi" placeholder="yourname@upi"></div>
+            <div class="setting-row"><label class="f-label">UPI Display Name</label><input class="f-input" id="set-upiname" placeholder="TicketZone India"></div>
+            <div class="setting-row"><label class="f-label">Service Fee (₹)</label><input class="f-input" id="set-fee" type="number" value="300"></div>
+            <div class="setting-row"><label class="f-label">Payment Timer (minutes)</label><input class="f-input" id="set-timer" type="number" value="10"></div>
+          </div>
+          <div class="setting-card">
+            <h4>🌐 Website</h4>
+            <div class="setting-row"><label class="f-label">Site URL</label><input class="f-input" id="set-url" placeholder="https://ipl.shekharafat73.workers.dev"></div>
+            <div class="setting-row"><label class="f-label">Instagram Handle</label><input class="f-input" id="set-ig" placeholder="@ticketzoneindia"></div>
+            <div class="setting-row"><label class="f-label">Supabase URL</label><input class="f-input" id="set-sburl" placeholder="https://xxx.supabase.co"></div>
+            <div class="setting-row"><label class="f-label">Supabase Anon Key</label><input class="f-input" id="set-sbkey" placeholder="eyJ..." type="password"></div>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn-save" onclick="saveSettings()">💾 Save Settings</button>
+          <div style="font-size:12px;color:var(--muted);margin-top:8px">Settings are saved in your browser. Update index.html CONFIG manually to make permanent.</div>
+        </div>
+      </div>
+
+    </div><!-- end content -->
+  </div><!-- end main -->
+</div><!-- end adminApp -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════
+// CONFIG
+// ══════════════════════════════════
+const CFG = {
+  SUPABASE_URL: 'https://bivccpgsxffdwxyoryaj.supabase.co',
+  SUPABASE_KEY: localStorage.getItem('tz_sbkey') || '',
+  ADMIN_PASSWORD: localStorage.getItem('tz_adminpass') || 'admin@tz2026',
+  SERVICE_FEE: parseInt(localStorage.getItem('tz_fee') || '300'),
+};
+
+// ══════════════════════════════════
+// LOCAL MATCH STORE (Supabase + localStorage fallback)
+// ══════════════════════════════════
+const DEFAULT_MATCHES = [
+  { id:'m1', t1:'RCB', f1:'🔴', t2:'SRH', f2:'🟠', date:'Mar 28, 2026', time:'7:30 PM', venue:'M. Chinnaswamy, Bengaluru',
+    tiers:[{name:'General',bms:1200},{name:'Premium',bms:1700},{name:'Pavilion',bms:2700}], avail:20, sold:false },
+  { id:'m2', t1:'MI', f1:'🔵', t2:'KKR', f2:'💜', date:'Mar 29, 2026', time:'7:30 PM', venue:'Wankhede, Mumbai',
+    tiers:[{name:'General',bms:1400},{name:'Premium',bms:2000},{name:'VIP Box',bms:11700}], avail:35, sold:false },
+  { id:'m3', t1:'RR', f1:'🩷', t2:'CSK', f2:'🟡', date:'Mar 30, 2026', time:'7:30 PM', venue:'Barsapara, Guwahati',
+    tiers:[{name:'General',bms:700},{name:'Premium',bms:1200},{name:'Pavilion',bms:2700}], avail:60, sold:false },
+  { id:'m4', t1:'PBKS', f1:'🔴', t2:'GT', f2:'🔵', date:'Mar 31, 2026', time:'7:30 PM', venue:'IS Bindra, Mohali',
+    tiers:[{name:'General',bms:950},{name:'Premium',bms:1450}], avail:0, sold:true },
+  { id:'m5', t1:'LSG', f1:'🟡', t2:'DC', f2:'🔵', date:'Apr 1, 2026', time:'7:30 PM', venue:'EKANA, Lucknow',
+    tiers:[{name:'General',bms:700},{name:'Premium',bms:950},{name:'Pavilion',bms:1200},{name:'Corporate Box',bms:11700},{name:'VIP Lounge',bms:14700}], avail:45, sold:false },
+  { id:'m6', t1:'GT', f1:'🔵', t2:'RR', f2:'🩷', date:'Apr 4, 2026', time:'7:30 PM', venue:'Narendra Modi, Ahmedabad',
+    tiers:[{name:'General',bms:950},{name:'Premium',bms:1700},{name:'VIP',bms:11700}], avail:10, sold:false },
+];
+
+function getMatches(){ return JSON.parse(localStorage.getItem('tz_matches') || JSON.stringify(DEFAULT_MATCHES)); }
+function saveMatches(m){ localStorage.setItem('tz_matches', JSON.stringify(m)); }
+
+let allBookings = [];
+let currentFilter = 'all';
+
+// ══════════════════════════════════
+// LOGIN
+// ══════════════════════════════════
+function doLogin(){
+  const pass = document.getElementById('passInput').value;
+  const stored = localStorage.getItem('tz_adminpass') || 'admin@tz2026';
+  if(pass === stored){
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+    setTimeout(()=>document.getElementById('loginErr').style.display='none', 2000);
+  }
+}
+function doLogout(){
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('adminApp').style.display = 'none';
+  document.getElementById('passInput').value = '';
+}
+document.getElementById('passInput').onkeypress = e => { if(e.key==='Enter') doLogin(); };
+
+// ══════════════════════════════════
+// NAV
+// ══════════════════════════════════
+function showPage(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s=>s.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  if(id==='bookings') loadBookings();
+  if(id==='matches') renderMatchesList();
+  if(id==='dashboard') loadDashboard();
+  if(id==='settings') loadSettings();
+}
+
+// ══════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════
+async function sbFetch(path, opts={}){
+  const key = CFG.SUPABASE_KEY || localStorage.getItem('tz_sbkey') || '';
+  if(!key || !CFG.SUPABASE_URL.includes('supabase.co')) return null;
+  try{
+    const res = await fetch(CFG.SUPABASE_URL+'/rest/v1/'+path, {
+      headers:{'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json',...(opts.headers||{})},
+      ...opts
+    });
+    if(opts.method==='PATCH'||opts.method==='POST') return res.ok;
+    return await res.json();
+  }catch(e){ return null; }
+}
+
+async function loadAll(){ await loadDashboard(); }
+
+// ══════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════
+async function loadDashboard(){
+  const data = await sbFetch('bookings?select=*&order=created_at.desc') || JSON.parse(localStorage.getItem('tz_bookings')||'[]').reverse();
+  allBookings = data;
+  const counts = {total:data.length,pending:0,paid:0,delivered:0,cancelled:0};
+  let revenue = 0;
+  data.forEach(b=>{
+    if(counts[b.status]!==undefined) counts[b.status]++;
+    if(b.status==='paid'||b.status==='delivered') revenue += (b.total_amount||0);
+  });
+  document.getElementById('ds-total').textContent = counts.total;
+  document.getElementById('ds-pending').textContent = counts.pending;
+  document.getElementById('ds-paid').textContent = counts.paid;
+  document.getElementById('ds-delivered').textContent = counts.delivered;
+  document.getElementById('ds-revenue').textContent = '₹'+revenue.toLocaleString();
+  document.getElementById('pendingBadge').textContent = counts.pending;
+
+  // Recent 5
+  const recent = data.slice(0,5);
+  const el = document.getElementById('recentBookings');
+  if(!recent.length){ el.innerHTML='<div class="empty-state">No bookings yet</div>'; return; }
+  el.innerHTML = `<table class="bookings-table" style="font-size:12px">
+    <thead><tr><th>Booking ID</th><th>Name</th><th>Match</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody>${recent.map(b=>`<tr>
+      <td><span class="bid">${b.booking_id}</span></td>
+      <td>${b.name}</td>
+      <td>${b.match_name||'—'}</td>
+      <td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:16px">₹${b.total_amount||0}</td>
+      <td><span class="pill ${b.status}">${b.status}</span></td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+// ══════════════════════════════════
+// MATCHES
+// ══════════════════════════════════
+function renderMatchesList(){
+  const matches = getMatches();
+  const el = document.getElementById('matchesList');
+  if(!matches.length){ el.innerHTML='<div class="empty-state">No matches. Add one above!</div>'; return; }
+  el.innerHTML = matches.map(m => `
+    <div class="match-row" id="mrow-${m.id}">
+      <div class="match-row-header" onclick="toggleMatchRow('${m.id}')">
+        <div class="match-teams-mini">${m.f1} ${m.t1} <span style="color:var(--muted);font-size:14px">vs</span> ${m.f2} ${m.t2}</div>
+        <div class="match-meta-mini">📅 ${m.date} · ${m.time}<br>📍 ${m.venue}</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="match-status-badge ${m.sold?'soldout':'active'}">${m.sold?'Sold Out':'Active'}</span>
+          <span style="font-size:12px;color:var(--muted)">${m.tiers?.length||0} price tiers</span>
+        </div>
+        <div class="match-row-expand">▼</div>
+      </div>
+      <div class="match-edit-form" id="mform-${m.id}">
+        ${renderMatchEditForm(m)}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMatchEditForm(m){
+  return `
+    <div class="edit-grid">
+      <div class="f-group"><label class="f-label">Team 1</label><input class="f-input" id="e-${m.id}-t1" value="${m.t1}"></div>
+      <div class="f-group"><label class="f-label">Emoji 1</label><input class="f-input" id="e-${m.id}-f1" value="${m.f1}"></div>
+      <div class="f-group"><label class="f-label">Team 2</label><input class="f-input" id="e-${m.id}-t2" value="${m.t2}"></div>
+      <div class="f-group"><label class="f-label">Emoji 2</label><input class="f-input" id="e-${m.id}-f2" value="${m.f2}"></div>
+    </div>
+    <div class="edit-grid">
+      <div class="f-group"><label class="f-label">Date</label><input class="f-input" id="e-${m.id}-date" value="${m.date}"></div>
+      <div class="f-group"><label class="f-label">Time</label><input class="f-input" id="e-${m.id}-time" value="${m.time}"></div>
+    </div>
+    <div class="f-group"><label class="f-label">Venue</label><input class="f-input" id="e-${m.id}-venue" value="${m.venue}"></div>
+
+    <div class="price-tiers">
+      <div class="price-tiers-title">Price Categories</div>
+      <div class="tiers-grid" id="tiers-${m.id}">
+        ${(m.tiers||[]).map((t,i)=>renderTier(m.id,i,t)).join('')}
+      </div>
+      <button class="add-tier-btn" style="margin-top:10px" onclick="addTier('${m.id}')">+ Add Category</button>
+    </div>
+
+    <div class="avail-row">
+      <div class="avail-label">Availability Status</div>
+      <div class="toggle-wrap">
+        <div class="toggle ${m.sold?'':'on'}" id="tog-${m.id}" onclick="toggleSold('${m.id}')"></div>
+        <span style="font-size:13px;color:var(--muted)" id="tog-lbl-${m.id}">${m.sold?'Sold Out':'Available'}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-left:16px">
+        <span style="font-size:12px;color:var(--muted)">Seats left %:</span>
+        <input class="f-input" id="e-${m.id}-avail" value="${m.avail}" type="number" min="0" max="100" style="width:70px;padding:6px 8px;font-size:14px">
+      </div>
+    </div>
+
+    <div class="match-action-row">
+      <button class="btn-save" onclick="saveMatch('${m.id}')">💾 Save Changes</button>
+      <button class="btn-delete" onclick="deleteMatch('${m.id}')">🗑 Delete Match</button>
+      <button class="btn-cancel" onclick="toggleMatchRow('${m.id}')">Cancel</button>
+    </div>
+  `;
+}
+
+function renderTier(matchId, idx, tier){
+  const fee = CFG.SERVICE_FEE;
+  const total = (tier.bms||0) + fee;
+  return `
+    <div class="tier-item" id="tier-${matchId}-${idx}">
+      <div class="tier-name-row">
+        <input class="tier-input" id="t-${matchId}-${idx}-name" value="${tier.name||''}" placeholder="Category name" style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.1);border-radius:0;padding:2px 0;font-size:13px;color:var(--text);font-family:'Rajdhani',sans-serif;font-weight:700;width:calc(100% - 24px)">
+        <button class="tier-remove" onclick="removeTier('${matchId}',${idx})">✕</button>
+      </div>
+      <div class="tier-inputs">
+        <div>
+          <div class="tier-input-label">BMS Price ₹</div>
+          <input class="tier-input" id="t-${matchId}-${idx}-bms" type="number" value="${tier.bms||0}" oninput="updateTierTotal('${matchId}',${idx})">
+        </div>
+        <div>
+          <div class="tier-input-label">+Fee ₹</div>
+          <input class="tier-input" value="${fee}" readonly style="opacity:0.4;cursor:not-allowed">
+        </div>
+      </div>
+      <div class="tier-total" id="ttotal-${matchId}-${idx}">Your Price: ₹${total}</div>
+    </div>
+  `;
+}
+
+function updateTierTotal(matchId, idx){
+  const bms = parseInt(document.getElementById(`t-${matchId}-${idx}-bms`)?.value||0);
+  const total = bms + CFG.SERVICE_FEE;
+  const el = document.getElementById(`ttotal-${matchId}-${idx}`);
+  if(el) el.textContent = `Your Price: ₹${total}`;
+}
+
+function addTier(matchId){
+  if(matchId==='new'){
+    const grid = document.getElementById('newTiersGrid');
+    const idx = grid.querySelectorAll('.tier-item').length;
+    const div = document.createElement('div');
+    div.innerHTML = renderTier('new', idx, {name:'',bms:0});
+    grid.appendChild(div.firstElementChild);
+  } else {
+    const matches = getMatches();
+    const m = matches.find(x=>x.id===matchId);
+    if(!m) return;
+    m.tiers = m.tiers||[];
+    m.tiers.push({name:'',bms:0});
+    saveMatches(matches);
+    renderMatchesList();
+    openMatchRow(matchId);
+  }
+}
+
+function removeTier(matchId, idx){
+  if(matchId==='new'){
+    document.getElementById(`tier-new-${idx}`)?.remove();
+  } else {
+    const matches = getMatches();
+    const m = matches.find(x=>x.id===matchId);
+    if(!m) return;
+    m.tiers.splice(idx,1);
+    saveMatches(matches);
+    renderMatchesList();
+    openMatchRow(matchId);
+  }
+}
+
+function getTiersFromForm(matchId){
+  const grid = document.getElementById(`tiers-${matchId}`);
+  if(!grid) return [];
+  const items = grid.querySelectorAll('.tier-item');
+  const tiers = [];
+  items.forEach((item,i)=>{
+    const name = item.querySelector(`input[id$="-name"]`)?.value?.trim();
+    const bms = parseInt(item.querySelector(`input[id$="-bms"]`)?.value||0);
+    if(name) tiers.push({name, bms});
+  });
+  return tiers;
+}
+
+function saveMatch(matchId){
+  const matches = getMatches();
+  const idx = matches.findIndex(x=>x.id===matchId);
+  if(idx<0) return;
+  matches[idx] = {
+    ...matches[idx],
+    t1: document.getElementById(`e-${matchId}-t1`)?.value||matches[idx].t1,
+    f1: document.getElementById(`e-${matchId}-f1`)?.value||matches[idx].f1,
+    t2: document.getElementById(`e-${matchId}-t2`)?.value||matches[idx].t2,
+    f2: document.getElementById(`e-${matchId}-f2`)?.value||matches[idx].f2,
+    date: document.getElementById(`e-${matchId}-date`)?.value||matches[idx].date,
+    time: document.getElementById(`e-${matchId}-time`)?.value||matches[idx].time,
+    venue: document.getElementById(`e-${matchId}-venue`)?.value||matches[idx].venue,
+    avail: parseInt(document.getElementById(`e-${matchId}-avail`)?.value||matches[idx].avail),
+    tiers: getTiersFromForm(matchId),
+  };
+  saveMatches(matches);
+  renderMatchesList();
+  showToast('✅ Match saved!', 'green');
+}
+
+function saveNewMatch(){
+  const t1 = document.getElementById('new-t1').value.trim();
+  const t2 = document.getElementById('new-t2').value.trim();
+  if(!t1||!t2){ showToast('❌ Team names required!','red'); return; }
+  const tiers = getTiersFromForm('new');
+  const matches = getMatches();
+  matches.push({
+    id: 'm'+Date.now(),
+    t1, f1: document.getElementById('new-f1').value||'🔵',
+    t2, f2: document.getElementById('new-f2').value||'🟡',
+    date: document.getElementById('new-date').value,
+    time: document.getElementById('new-time').value,
+    venue: document.getElementById('new-venue').value,
+    tiers: tiers.length ? tiers : [{name:'General',bms:1000}],
+    avail:100, sold:false
+  });
+  saveMatches(matches);
+  toggleAddPanel();
+  renderMatchesList();
+  showToast('✅ Match added!','green');
+}
+
+function deleteMatch(matchId){
+  if(!confirm('Delete this match?')) return;
+  const matches = getMatches().filter(m=>m.id!==matchId);
+  saveMatches(matches);
+  renderMatchesList();
+  showToast('🗑 Match deleted','red');
+}
+
+function toggleSold(matchId){
+  const matches = getMatches();
+  const m = matches.find(x=>x.id===matchId);
+  if(!m) return;
+  m.sold = !m.sold;
+  saveMatches(matches);
+  const tog = document.getElementById(`tog-${matchId}`);
+  const lbl = document.getElementById(`tog-lbl-${matchId}`);
+  if(tog){ tog.classList.toggle('on',!m.sold); }
+  if(lbl){ lbl.textContent = m.sold?'Sold Out':'Available'; }
+}
+
+function toggleMatchRow(id){
+  const row = document.getElementById('mrow-'+id);
+  if(!row) return;
+  row.classList.toggle('open');
+}
+function openMatchRow(id){
+  const row = document.getElementById('mrow-'+id);
+  if(row) row.classList.add('open');
+}
+function toggleAddPanel(){
+  document.getElementById('addMatchPanel').classList.toggle('show');
+  // reset
+  ['new-t1','new-t2','new-f1','new-f2','new-date','new-time','new-venue'].forEach(id=>{
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('newTiersGrid').innerHTML = renderTier('new',0,{name:'General',bms:1000})+renderTier('new',1,{name:'Premium',bms:1500});
+}
+
+// ══════════════════════════════════
+// BOOKINGS
+// ══════════════════════════════════
+async function loadBookings(){
+  const data = await sbFetch('bookings?select=*&order=created_at.desc') || JSON.parse(localStorage.getItem('tz_bookings')||'[]').reverse();
+  allBookings = data;
+  renderBookingsTable(currentFilter);
+}
+
+function filterBookings(filter, btn){
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBookingsTable(filter);
+}
+
+function renderBookingsTable(filter){
+  const filtered = filter==='all' ? allBookings : allBookings.filter(b=>b.status===filter);
+  const tbody = document.getElementById('bookingsBody');
+  const empty = document.getElementById('bookingsEmpty');
+  if(!filtered.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML = filtered.map(b=>`
+    <tr>
+      <td><span class="bid">${b.booking_id||'—'}</span></td>
+      <td style="white-space:nowrap">${b.name}<br><span style="font-size:10px;color:var(--muted)">${b.email||''}</span></td>
+      <td>${b.phone}</td>
+      <td style="white-space:nowrap;font-size:12px">${b.match_name||'—'}<br><span style="color:var(--muted)">${b.match_date||''}</span></td>
+      <td>${b.quantity||1} × ${b.category||'—'}</td>
+      <td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:18px">₹${b.total_amount||0}</td>
+      <td style="font-family:monospace;font-size:11px;color:var(--muted)">${b.utr||'—'}</td>
+      <td><span class="pill ${b.status}">${b.status}</span></td>
+      <td><input class="note-inp" id="note-${b.booking_id}" value="${b.admin_notes||''}" placeholder="Add note..."></td>
+      <td style="display:flex;flex-direction:column;gap:6px;padding-top:14px">
+        <select class="status-sel" id="sel-${b.booking_id}">
+          <option value="pending"   ${b.status==='pending'?'selected':''}>🟡 Pending</option>
+          <option value="confirmed" ${b.status==='confirmed'?'selected':''}>🔵 Confirmed</option>
+          <option value="paid"      ${b.status==='paid'?'selected':''}>🟣 Paid</option>
+          <option value="delivered" ${b.status==='delivered'?'selected':''}>✅ Delivered</option>
+          <option value="cancelled" ${b.status==='cancelled'?'selected':''}>❌ Cancelled</option>
+        </select>
+        <button class="upd-btn" onclick="updateBooking('${b.booking_id}')">Update</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function updateBooking(bid){
+  const status = document.getElementById(`sel-${bid}`)?.value;
+  const notes = document.getElementById(`note-${bid}`)?.value?.trim();
+  const ok = await sbFetch(`bookings?booking_id=eq.${bid}`,{
+    method:'PATCH',
+    headers:{'Prefer':'return=minimal'},
+    body:JSON.stringify({status,admin_notes:notes,updated_at:new Date().toISOString()})
+  });
+  // Update local fallback too
+  const local = JSON.parse(localStorage.getItem('tz_bookings')||'[]');
+  const idx = local.findIndex(b=>b.booking_id===bid);
+  if(idx>-1){local[idx].status=status;local[idx].admin_notes=notes;localStorage.setItem('tz_bookings',JSON.stringify(local));}
+  showToast(`✅ ${bid} → ${status}`,'green');
+  await loadBookings();
+}
+
+// ══════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════
+function loadSettings(){
+  document.getElementById('set-upi').value = localStorage.getItem('tz_upi')||'fxb12@ybl';
+  document.getElementById('set-upiname').value = localStorage.getItem('tz_upiname')||'TicketZone India';
+  document.getElementById('set-fee').value = localStorage.getItem('tz_fee')||'300';
+  document.getElementById('set-timer').value = localStorage.getItem('tz_timer')||'10';
+  document.getElementById('set-url').value = localStorage.getItem('tz_url')||'https://ipl.shekharafat73.workers.dev';
+  document.getElementById('set-ig').value = localStorage.getItem('tz_ig')||'@ticketzoneindia';
+  document.getElementById('set-sburl').value = localStorage.getItem('tz_sburl')||CFG.SUPABASE_URL;
+}
+function saveSettings(){
+  localStorage.setItem('tz_upi', document.getElementById('set-upi').value);
+  localStorage.setItem('tz_upiname', document.getElementById('set-upiname').value);
+  localStorage.setItem('tz_fee', document.getElementById('set-fee').value);
+  localStorage.setItem('tz_timer', document.getElementById('set-timer').value);
+  localStorage.setItem('tz_url', document.getElementById('set-url').value);
+  localStorage.setItem('tz_ig', document.getElementById('set-ig').value);
+  const sburl = document.getElementById('set-sburl').value;
+  const sbkey = document.getElementById('set-sbkey').value;
+  if(sburl) localStorage.setItem('tz_sburl', sburl);
+  if(sbkey) localStorage.setItem('tz_sbkey', sbkey);
+  CFG.SERVICE_FEE = parseInt(document.getElementById('set-fee').value)||300;
+  showToast('✅ Settings saved!','green');
+}
+
+// ══════════════════════════════════
+// TOAST
+// ══════════════════════════════════
+let toastTimer;
+function showToast(msg, type=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show'+(type?' '+type:'');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ══════════════════════════════════
+// INIT
+// ══════════════════════════════════
+// Init new match tiers defaults
+document.getElementById('newTiersGrid').innerHTML =
+  renderTier('new',0,{name:'General',bms:1000})+
+  renderTier('new',1,{name:'Premium',bms:1500})+
+  renderTier('new',2,{name:'Pavilion',bms:2700});
+</script>
+</body>
+</html>
