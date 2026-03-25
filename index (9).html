@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TicketZone India – Book IPL 2026 Tickets</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --gold: #f0b429; --gold-light: #ffe066; --gold-dim: rgba(240,180,41,0.1);
+  --cyan: #00e5ff; --cyan-dim: rgba(0,229,255,0.08); --cyan-glow: rgba(0,229,255,0.25);
+  --dark: #000000; --dark2: #080808; --dark3: #0d0d0d; --dark4: #141414;
+  --text: #f0f0f0; --muted: rgba(240,240,240,0.45);
+  --red: #ff3b3b; --green: #00e676; --border: rgba(0,229,255,0.15);
+  --border-gold: rgba(240,180,41,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#000;color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--gold));border-radius:2px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(0,0,0,0.92);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,229,255,0.12);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between}
+nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;background:linear-gradient(to right,transparent,rgba(0,229,255,0.3),transparent)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px rgba(240,180,41,0.4))}
+.nav-logo span{background:linear-gradient(135deg,#fff,rgba(255,255,255,0.7));-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:all .2s;position:relative}
+.nav-links a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan-glow)}
+.nav-cta{color:#000!important;background:linear-gradient(135deg,var(--cyan),#0099bb);padding:8px 22px;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;box-shadow:0 0 16px var(--cyan-glow);text-shadow:none!important}
+.nav-cta:hover{box-shadow:0 0 30px var(--cyan-glow)!important}
+
+/* ── HERO ── */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 40px 60px;overflow:hidden;background:#000}
+#cricketCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 75% 65% at 50% 50%,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.72) 55%,rgba(0,0,0,0.97) 100%)}
+.fl-rays{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.fl-ray{position:absolute;top:0;width:1px;transform-origin:top center;background:linear-gradient(to bottom,rgba(255,230,120,0.15),transparent 65%);filter:blur(2px)}
+.hero-vignette{position:absolute;bottom:0;left:0;right:0;height:220px;z-index:2;background:linear-gradient(to top,#000 30%,transparent)}
+.crowd-row{position:absolute;bottom:24px;left:0;right:0;height:55px;z-index:2;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;opacity:0.3}
+.crowd-p{width:7px;margin:0 1px;border-radius:3px 3px 0 0;background:rgba(201,162,39,0.7);animation:crowdBob 1.5s ease-in-out infinite alternate}
+@keyframes crowdBob{0%{transform:scaleY(0.8)}100%{transform:scaleY(1.2)}}
+.hero-content{position:relative;z-index:4;max-width:860px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.25);padding:7px 22px;font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:28px;box-shadow:0 0 20px rgba(0,229,255,0.08)}
+.live-dot{width:7px;height:7px;background:#ff3b3b;border-radius:50%;box-shadow:0 0 8px #ff3b3b,0 0 16px rgba(255,59,59,0.4);animation:blink 1.2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,9.5vw,116px);line-height:.88;margin-bottom:10px;letter-spacing:1px;text-shadow:0 0 60px rgba(255,255,255,0.06)}
+.hero h1 .g{color:transparent;background:linear-gradient(135deg,#ffe066 0%,var(--gold) 50%,#e08800 100%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 20px rgba(240,180,41,0.5))}
+.hero-sub{font-family:'Rajdhani',sans-serif;font-size:17px;letter-spacing:5px;color:var(--muted);text-transform:uppercase;margin-bottom:40px}
+.hero-stats{display:flex;justify-content:center;gap:0;margin-bottom:44px;flex-wrap:wrap}
+.hero-stat-item{padding:0 32px;border-right:1px solid rgba(0,229,255,0.12);text-align:center}
+.hero-stat-item:last-child{border-right:none}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;background:linear-gradient(135deg,var(--cyan),#00aacc);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px rgba(0,229,255,0.4))}
+.stat-label{font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:3px}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-primary{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:4px;color:#000;background:linear-gradient(135deg,var(--gold-light),var(--gold),#c87d00);padding:17px 52px;text-decoration:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all .3s;box-shadow:0 0 28px rgba(240,180,41,0.35),inset 0 1px 0 rgba(255,255,255,0.2);cursor:pointer;border:none;font-weight:900}
+.btn-primary:hover{box-shadow:0 0 52px rgba(240,180,41,0.6),0 8px 30px rgba(0,0,0,0.4);transform:translateY(-2px)}
+.btn-outline{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:4px;color:var(--cyan);background:rgba(0,229,255,0.04);padding:17px 52px;text-decoration:none;border:1px solid rgba(0,229,255,0.3);clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all .3s;cursor:pointer}
+.btn-outline:hover{background:rgba(0,229,255,0.1);border-color:var(--cyan);box-shadow:0 0 24px rgba(0,229,255,0.2)}
+
+/* ── SECTION ── */
+section{padding:90px 40px}
+.container{max-width:1180px;margin:0 auto}
+.sec-label{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:5px;color:var(--cyan);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;max-width:50px;height:1px;background:linear-gradient(to right,var(--cyan),transparent)}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,5vw,60px);line-height:1;letter-spacing:2px;margin-bottom:14px}
+.sec-title .g{background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sec-desc{color:var(--muted);font-size:15px;margin-bottom:44px}
+
+/* ── MATCHES ── */
+.matches-section{background:#000;border-top:1px solid rgba(0,229,255,0.06)}
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;margin-bottom:36px}
+.match-card{background:linear-gradient(145deg,#0d0d0d,#080808);border:1px solid rgba(0,229,255,0.1);padding:22px;position:relative;cursor:pointer;transition:all .35s;overflow:hidden}
+.match-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--cyan),var(--gold),transparent);opacity:0;transition:opacity .3s}
+.match-card:hover{border-color:rgba(0,229,255,0.35);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,229,255,0.1),0 0 0 1px rgba(0,229,255,0.08)}
+.match-card:hover::before,.match-card.selected::before{opacity:1}
+.match-card.selected{border-color:var(--cyan);background:rgba(0,229,255,0.05);box-shadow:0 0 30px rgba(0,229,255,0.1)}
+.match-card.sold-out{opacity:.45;cursor:not-allowed}
+.match-card.sold-out:hover{transform:none;border-color:var(--border);box-shadow:none}
+.match-date-badge{display:inline-block;font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:3px;color:var(--cyan);background:rgba(0,229,255,0.07);border:1px solid rgba(0,229,255,0.15);padding:3px 10px;text-transform:uppercase;margin-bottom:14px}
+.match-teams{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.team{display:flex;flex-direction:column;align-items:center;gap:4px}
+.team-flag{font-size:26px}
+.team-code{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;line-height:1}
+.vs{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--muted);letter-spacing:2px}
+.match-info{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--border);padding-top:12px}
+.match-venue{font-size:12px;color:var(--muted)}
+.price-label{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.price-val{font-family:'Bebas Neue',sans-serif;font-size:22px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;filter:drop-shadow(0 0 6px rgba(240,180,41,0.3))}
+.avail-bar{margin-top:10px;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.avail-fill{height:100%;background:linear-gradient(to right,var(--cyan),var(--gold));border-radius:2px;box-shadow:0 0 8px rgba(0,229,255,0.4)}
+.avail-text{font-size:11px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between}
+.sold-label{position:absolute;top:10px;right:10px;font-family:'Rajdhani',sans-serif;font-size:10px;letter-spacing:2px;color:var(--red);border:1px solid var(--red);padding:2px 7px;text-transform:uppercase}
+.convenience-note{background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.15);padding:14px 20px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:30px}
+.convenience-note strong{color:var(--gold)}
+
+/* ── TRUST ── */
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:44px}
+.trust-card{background:linear-gradient(145deg,#0a0a0a,#050505);border:1px solid rgba(0,229,255,0.1);padding:26px 20px;text-align:center;transition:all .35s;position:relative;overflow:hidden}
+.trust-card:hover{border-color:rgba(0,229,255,0.3);transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,229,255,0.08)}
+.trust-icon{font-size:28px;margin-bottom:12px}
+.trust-card h4{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.trust-card p{font-size:13px;color:var(--muted);line-height:1.6}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:36px}
+.review-card{background:linear-gradient(145deg,#0a0a0a,#050505);border:1px solid rgba(240,180,41,0.12);padding:22px;position:relative}
+.review-card::before{content:'"';position:absolute;top:8px;right:16px;font-size:56px;color:rgba(201,162,39,.08);font-family:Georgia,serif;line-height:1}
+.review-stars{color:var(--gold);font-size:13px;margin-bottom:8px}
+.review-text{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;font-style:italic}
+.review-author{display:flex;align-items:center;gap:10px}
+.review-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--gold)}
+.review-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600}
+.review-loc{font-size:11px;color:var(--muted)}
+
+/* ── FAQ ── */
+.faq-list{max-width:700px;margin:36px auto 0}
+.faq-item{border:1px solid rgba(0,229,255,0.1);margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.faq-q{padding:16px 22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;transition:background .2s;user-select:none}
+.faq-q:hover,.faq-q.open{background:rgba(0,229,255,0.05);color:var(--cyan)}
+.faq-icon{font-size:18px;color:var(--cyan);transition:transform .3s;font-family:monospace}
+.faq-q.open .faq-icon{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;font-size:13px;color:var(--muted);line-height:1.7}
+.faq-a.open{max-height:200px;padding:0 22px 16px}
+
+/* ── DISCLAIMER ── */
+.disc-section{background:#000;border-top:1px solid rgba(255,59,59,0.15)}
+.disc-box{border:1px solid rgba(255,100,100,.2);background:rgba(255,50,50,.03);padding:26px;max-width:860px;margin:0 auto}
+.disc-title{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;color:rgba(255,100,100,.8);text-transform:uppercase;margin-bottom:10px}
+.disc-box p{font-size:13px;color:rgba(232,232,232,.45);line-height:1.7;margin-bottom:8px}
+
+/* ── FOOTER ── */
+footer{background:#000;border-top:1px solid rgba(0,229,255,0.1);padding:36px 40px;text-align:center;position:relative}footer::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(to right,transparent,rgba(0,229,255,0.3),var(--gold),rgba(0,229,255,0.3),transparent)}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:10px;filter:drop-shadow(0 0 8px rgba(240,180,41,0.3))}
+.footer-links{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-bottom:14px}
+.footer-links a{font-size:12px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.18)}
+
+/* ═══════════════════════════════
+   BOOKING POPUP SYSTEM
+═══════════════════════════════ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex}
+.popup{background:linear-gradient(160deg,#0a0a0a,#050505);border:1px solid rgba(0,229,255,0.2);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 0 60px rgba(0,0,0,0.8),0 0 40px rgba(0,229,255,0.06)}
+.popup::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--cyan),var(--gold),transparent)}
+.popup-header{padding:28px 28px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.popup-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px}
+.popup-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:4px;line-height:1}
+.popup-close:hover{color:var(--text)}
+.popup-body{padding:20px 28px 28px}
+.popup-match-info{background:var(--gold-dim);border:1px solid var(--border);padding:12px 16px;margin-bottom:20px;font-size:14px}
+.popup-match-info strong{color:var(--gold);font-family:'Rajdhani',sans-serif;letter-spacing:1px}
+
+/* Form */
+.f-group{margin-bottom:16px}
+.f-label{font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;display:block;margin-bottom:6px}
+.f-input{width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(0,229,255,0.15);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:11px 14px;outline:none;transition:all .2s}
+.f-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,0.08),0 0 12px rgba(0,229,255,0.06)}
+.f-input::placeholder{color:rgba(255,255,255,.18)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.price-summary{background:rgba(0,229,255,0.03);border:1px solid rgba(0,229,255,0.1);padding:14px 16px;margin:16px 0}
+.price-row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
+.price-row.total{color:var(--text);font-weight:600;font-size:15px;border-top:1px solid rgba(0,229,255,0.1);padding-top:10px;margin-top:4px}
+.price-row.total span:last-child{background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;filter:drop-shadow(0 0 6px rgba(240,180,41,0.4))}
+.submit-btn{width:100%;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:4px;color:#000;background:linear-gradient(135deg,var(--gold-light),var(--gold),#c87d00);border:none;padding:15px;cursor:pointer;transition:all .3s;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);margin-top:6px;font-weight:900}
+.submit-btn:hover{box-shadow:0 0 32px rgba(240,180,41,.5),0 4px 20px rgba(0,0,0,.4);transform:translateY(-1px)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* STEP 2 — UPI Payment */
+.upi-box{text-align:center;padding:8px 0}
+.booking-id-display{background:rgba(240,180,41,0.04);border:1px solid var(--gold);border-top:2px solid var(--gold);padding:16px;text-align:center;margin-bottom:20px;box-shadow:0 0 20px rgba(240,180,41,0.08)}
+.bid-label{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.bid-value{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(240,180,41,0.5))}
+.upi-instruction{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.upi-id-box{background:rgba(0,229,255,0.03);border:1px solid rgba(0,229,255,0.2);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.upi-id-text{font-family:monospace;font-size:16px;color:var(--cyan);letter-spacing:1px;text-shadow:0 0 8px rgba(0,229,255,0.4)}
+.copy-btn{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:2px;background:var(--gold-dim);border:1px solid var(--border);color:var(--gold);padding:6px 14px;cursor:pointer;text-transform:uppercase;transition:all .2s}
+.copy-btn:hover{background:var(--gold);color:var(--dark)}
+.upi-amount{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;background:linear-gradient(135deg,#fff 0%,var(--gold-light) 50%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(240,180,41,0.5));margin:10px 0}
+.upi-name{font-size:13px;color:var(--muted);margin-bottom:20px}
+.timer-box{background:rgba(255,100,100,.06);border:1px solid rgba(255,100,100,.2);padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.timer-text{font-size:13px;color:rgba(255,150,150,.9);flex:1}
+.timer-count{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#ff8080;letter-spacing:1px}
+.confirm-payment-btn{width:100%;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--dark);background:linear-gradient(135deg,#6ee7b7,#2ecc71);border:none;padding:14px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all .3s;margin-top:4px}
+.confirm-payment-btn:hover{box-shadow:0 0 24px rgba(46,204,113,.4)}
+.payment-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6}
+
+/* STEP 3 — Waiting */
+.waiting-box{text-align:center;padding:16px 0}
+.waiting-icon{font-size:52px;margin-bottom:16px;animation:spin 3s linear infinite}
+@keyframes spin{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.waiting-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--gold);margin-bottom:10px}
+.waiting-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px}
+.waiting-steps{text-align:left;background:var(--dark2);border:1px solid var(--border);padding:16px 20px}
+.w-step{display:flex;gap:12px;padding:8px 0;font-size:13px;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.04)}
+.w-step:last-child{border-bottom:none}
+.w-step-icon{font-size:16px;flex-shrink:0}
+.check-status-link{display:block;text-align:center;margin-top:18px;font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-decoration:underline;cursor:pointer;text-transform:uppercase}
+
+/* ═══════════════════════════════
+   STATUS CHECK PAGE
+═══════════════════════════════ */
+#statusPage{display:none;min-height:100vh;padding:100px 40px 60px;background:var(--dark)}
+.status-container{max-width:560px;margin:0 auto}
+.status-hero{text-align:center;margin-bottom:44px}
+.status-hero h1{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;line-height:1;margin-bottom:8px}
+.status-hero p{font-size:15px;color:var(--muted)}
+.status-search-box{background:linear-gradient(145deg,#0a0a0a,#050505);border:1px solid rgba(0,229,255,0.15);padding:32px;margin-bottom:24px;position:relative}
+.status-search-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--cyan),var(--gold),transparent)}
+.status-result{display:none;background:var(--dark3);border:1px solid var(--border);padding:28px;position:relative;overflow:hidden}
+.status-result::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.status-result.pending::before{background:linear-gradient(to right,#f59e0b,#fbbf24)}
+.status-result.confirmed::before{background:linear-gradient(to right,#3b82f6,#60a5fa)}
+.status-result.paid::before{background:linear-gradient(to right,#8b5cf6,#a78bfa)}
+.status-result.delivered::before{background:linear-gradient(to right,var(--green),#6ee7b7)}
+.status-result.cancelled::before{background:linear-gradient(to right,var(--red),#f87171)}
+.status-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.status-badge.pending{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#fbbf24}
+.status-badge.confirmed{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:#60a5fa}
+.status-badge.paid{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);color:#a78bfa}
+.status-badge.delivered{background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.3);color:var(--green)}
+.status-badge.cancelled{background:rgba(224,48,48,.1);border:1px solid rgba(224,48,48,.3);color:#f87171}
+.status-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.status-info-item{background:var(--dark2);padding:12px 14px}
+.sii-label{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.sii-value{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;color:var(--text)}
+.status-message{background:var(--dark2);border-left:3px solid var(--gold);padding:12px 16px;font-size:13px;color:var(--muted);line-height:1.6}
+.status-message.delivered-msg{border-left-color:var(--green);color:rgba(110,231,183,.9)}
+.status-err{background:rgba(224,48,48,.06);border:1px solid rgba(224,48,48,.2);padding:14px 18px;font-size:13px;color:rgba(248,113,113,.9);display:none;margin-top:12px}
+
+/* ═══════════════════════════════
+   ADMIN PAGE
+═══════════════════════════════ */
+#adminPage{display:none;min-height:100vh;padding:80px 20px 60px;background:#000}
+.admin-container{max-width:1100px;margin:0 auto}
+.admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.admin-title{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:2px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.admin-logout{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:2px;background:rgba(255,50,50,.1);border:1px solid rgba(255,50,50,.3);color:#f87171;padding:8px 18px;cursor:pointer;text-transform:uppercase}
+.admin-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px}
+.astat{background:linear-gradient(145deg,#0d0d0d,#080808);border:1px solid rgba(0,229,255,0.1);padding:16px;text-align:center}
+.astat-num{font-family:'Bebas Neue',sans-serif;font-size:32px;background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.astat-label{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:3px}
+.admin-filter{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.filter-btn{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:2px;padding:7px 16px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;text-transform:uppercase;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th{font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 14px;background:rgba(201,162,39,.05);border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+.admin-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--muted);vertical-align:middle}
+.admin-table tr:hover td{background:rgba(255,255,255,.015)}
+.bid-cell{font-family:monospace;color:var(--gold-light);font-size:13px}
+.status-select{background:var(--dark4);border:1px solid var(--border);color:var(--text);font-size:12px;padding:6px 10px;cursor:pointer;outline:none;font-family:'Inter',sans-serif;width:130px}
+.update-btn{font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:1px;background:var(--gold-dim);border:1px solid var(--border);color:var(--gold);padding:6px 12px;cursor:pointer;text-transform:uppercase;transition:all .2s;white-space:nowrap}
+.update-btn:hover{background:var(--gold);color:var(--dark)}
+.notes-input{background:var(--dark4);border:1px solid var(--border);color:var(--text);font-size:12px;padding:6px 10px;width:140px;font-family:'Inter',sans-serif;outline:none}
+.notes-input:focus{border-color:var(--gold)}
+.admin-empty{text-align:center;padding:60px 0;color:var(--muted)}
+.admin-login{background:var(--dark3);border:1px solid var(--border);padding:40px;max-width:360px;margin:0 auto;text-align:center}
+.admin-login h2{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:24px}
+.admin-login-err{font-size:13px;color:#f87171;margin-top:10px;display:none}
+.pill{display:inline-block;padding:3px 10px;border-radius:2px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.pill.pending{background:rgba(245,158,11,.15);color:#fbbf24}
+.pill.confirmed{background:rgba(59,130,246,.15);color:#60a5fa}
+.pill.paid{background:rgba(139,92,246,.15);color:#a78bfa}
+.pill.delivered{background:rgba(46,204,113,.15);color:var(--green)}
+.pill.cancelled{background:rgba(224,48,48,.15);color:#f87171}
+
+/* ── MISC ── */
+.gold-divider{height:1px;background:linear-gradient(to right,transparent,rgba(0,229,255,0.2),rgba(240,180,41,0.3),rgba(0,229,255,0.2),transparent);margin:0}
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .nav-links{display:none}
+  section{padding:60px 20px}
+  .admin-stats{grid-template-columns:repeat(2,1fr)}
+  .f-row{grid-template-columns:1fr}
+  .status-info-grid{grid-template-columns:1fr}
+  #adminPage{padding:70px 12px 40px}
+  .admin-table{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ MAIN WEBSITE ═══════ -->
+<div id="mainSite">
+
+<nav>
+  <div class="nav-logo">🏏 TicketZone<span> India</span></div>
+  <div class="nav-links">
+    <a href="#matches">Matches</a>
+    <a href="#trust">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="#" onclick="showStatusPage();return false">Check Booking</a>
+    <a href="#matches" class="nav-cta" onclick="scrollToMatches()">Book Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="cricketCanvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="fl-rays" id="flRays"></div>
+  <div class="hero-vignette"></div>
+  <div class="crowd-row" id="crowdRow"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><div class="live-dot"></div>IPL 2026 Tickets Available Now</div>
+    <h1>Book <span class="g">IPL</span><br>Tickets Now</h1>
+    <div class="hero-sub">Starts March 28 · Fast · Secure · Genuine</div>
+    <div class="hero-stats">
+      <div class="hero-stat-item"><div class="stat-num">500+</div><div class="stat-label">Happy Customers</div></div>
+      <div class="hero-stat-item"><div class="stat-num">2 Hrs</div><div class="stat-label">Avg Delivery</div></div>
+      <div class="hero-stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Customer Rating</div></div>
+      <div class="hero-stat-item"><div class="stat-num">100%</div><div class="stat-label">Genuine Tickets</div></div>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="scrollToMatches()">🎟 Book Tickets Now</button>
+      <button class="btn-outline" onclick="showStatusPage()">🔍 Check Booking Status</button>
+    </div>
+  </div>
+</section>
+
+<!-- MATCHES -->
+<section class="matches-section" id="matches">
+  <div class="container">
+    <div class="sec-label">🏟 IPL 2026 Fixtures</div>
+    <h2 class="sec-title">Select Your <span class="g">Match</span></h2>
+    <p class="sec-desc">Click any match to book. Seats are limited — first come, first served.</p>
+    <div class="convenience-note">
+      ℹ️ All prices include a <strong>₹300 arrangement & service fee</strong> for 100% genuine ticket sourcing and guaranteed delivery.
+    </div>
+    <div class="matches-grid" id="matchesGrid"></div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- TRUST -->
+<section id="trust" style="background:#030303;border-top:1px solid rgba(0,229,255,0.05)">
+  <div class="container">
+    <div class="sec-label">🛡 Why Choose Us</div>
+    <h2 class="sec-title">Trusted by <span class="g">Cricket Fans</span></h2>
+    <div class="trust-grid">
+      <div class="trust-card"><div class="trust-icon">🎟</div><h4>Genuine Tickets</h4><p>Every ticket sourced from verified channels. 500+ successful deliveries.</p></div>
+      <div class="trust-card"><div class="trust-icon">💳</div><h4>Simple UPI Pay</h4><p>Pay directly via GPay / PhonePe / Paytm after booking confirmation.</p></div>
+      <div class="trust-card"><div class="trust-icon">📱</div><h4>Phone Delivery</h4><p>E-ticket sent directly to your mobile number and email. No pickup needed.</p></div>
+      <div class="trust-card"><div class="trust-icon">🔄</div><h4>Refund Guarantee</h4><p>Full refund if we can't deliver your ticket. No questions asked.</p></div>
+      <div class="trust-card"><div class="trust-icon">🔍</div><h4>Live Tracking</h4><p>Track your booking status anytime using your unique Booking ID.</p></div>
+      <div class="trust-card"><div class="trust-icon">⚡</div><h4>Fast Processing</h4><p>Most tickets delivered within 2 hours of payment confirmation.</p></div>
+    </div>
+    <div style="margin-top:60px">
+      <div class="sec-label">⭐ Reviews</div>
+      <h2 class="sec-title">What Fans <span class="g">Say</span></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">Booked 2 tickets for MI vs CSK. Got ticket on WhatsApp within 2 hours of paying. Totally legit!</p><div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Rahul M.</div><div class="review-loc">📍 Mumbai · March 2026</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">Was nervous ordering online but the booking ID tracking gave me confidence. Smooth experience!</p><div class="review-author"><div class="review-avatar">P</div><div><div class="review-name">Priya K.</div><div class="review-loc">📍 Bangalore · March 2026</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★☆</div><p class="review-text">Got 4 tickets for Ahmedabad match. Checked status page 3-4 times and it updated in real time. 👌</p><div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">Arjun S.</div><div class="review-loc">📍 Pune · April 2026</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="sec-label" style="justify-content:center">❓ FAQ</div>
+    <h2 class="sec-title" style="text-align:center">Common <span class="g">Questions</span></h2>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I know my payment went through?<span class="faq-icon">+</span></div><div class="faq-a">After paying via UPI, click "I've Paid" in the popup and enter your UPI UTR number. Your booking status will update to "Payment Received" and you'll see it on your status page.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How long until I get my ticket?<span class="faq-icon">+</span></div><div class="faq-a">Most tickets are delivered within 2 hours of payment confirmation. You'll receive it on your registered mobile number and email.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What if my booking shows "Pending" for long?<span class="faq-icon">+</span></div><div class="faq-a">If your status is pending for over 30 minutes after payment, contact us on Instagram @ticketzoneindia with your Booking ID.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I get a refund?<span class="faq-icon">+</span></div><div class="faq-a">Yes. If we cannot deliver your ticket after payment, 100% refund within 24 hours. If match is officially cancelled by BCCI/IPL, full refund within 48 hours.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Are you affiliated with BookMyShow or BCCI?<span class="faq-icon">+</span></div><div class="faq-a">No. We are an independent ticket arrangement service. Not affiliated with BCCI, IPL, or any official platform. Read our full disclaimer below.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section class="disc-section">
+  <div class="container">
+    <div class="disc-box">
+      <div class="disc-title">⚠️ Disclaimer</div>
+      <p>TicketZone India is an independent ticket facilitation service. We are NOT affiliated with BCCI, IPL, any IPL franchise, BookMyShow, Paytm Insider, or any official ticketing platform. IPL team names and logos are trademarks of their respective owners. Ticket prices include a ₹300 service & arrangement fee. All bookings subject to availability. TicketZone India acts as a secondary market facilitator only.</p>
+      <p><strong style="color:rgba(232,232,232,.6)">Refund Policy:</strong> Full refund if ticket not delivered after payment. Full refund if match officially cancelled by BCCI/IPL. Cancellations by buyer after booking: 70% refund if 48hrs+ before match, no refund within 48hrs.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">🏏 TicketZone India</div>
+  <div class="footer-links">
+    <a href="#matches">Matches</a>
+    <a href="#trust">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="#" onclick="showStatusPage();return false">Check Booking</a>
+  </div>
+  <p class="footer-copy">© 2026 TicketZone India · Independent Service · Not affiliated with BCCI or IPL</p>
+</footer>
+
+</div><!-- end #mainSite -->
+
+
+<!-- ═══════ STATUS CHECK PAGE ═══════ -->
+<div id="statusPage">
+  <div class="status-container">
+    <button onclick="showMainSite()" style="background:none;border:none;color:var(--muted);font-size:13px;letter-spacing:2px;cursor:pointer;margin-bottom:28px;font-family:'Rajdhani',sans-serif;text-transform:uppercase">← Back to Home</button>
+    <div class="status-hero">
+      <div class="sec-label" style="justify-content:center">🔍 Booking Tracker</div>
+      <h1 class="sec-title">Check Your <span class="g">Booking</span></h1>
+      <p>Enter your Booking ID to see the latest status of your ticket.</p>
+    </div>
+
+    <div class="status-search-box">
+      <div class="f-group">
+        <label class="f-label">Your Booking ID</label>
+        <input type="text" class="f-input" id="statusInput" placeholder="e.g. TZ-2026-XXXX" style="text-transform:uppercase;letter-spacing:2px;font-family:monospace;font-size:16px" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <button class="submit-btn" onclick="checkStatus()" id="checkBtn">🔍 Check Status</button>
+      <div class="status-err" id="statusErr">❌ Booking ID not found. Please check and try again.</div>
+    </div>
+
+    <div class="status-result" id="statusResult">
+      <div class="status-badge" id="statusBadge"></div>
+      <div class="status-info-grid" id="statusInfoGrid"></div>
+      <div class="status-message" id="statusMsg"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════ ADMIN PAGE ═══════ -->
+<div id="adminPage">
+  <!-- Login -->
+  <div id="adminLogin" class="admin-container" style="display:flex;align-items:center;justify-content:center;min-height:80vh">
+    <div class="admin-login">
+      <div style="font-size:32px;margin-bottom:8px">🔐</div>
+      <h2>Admin Login</h2>
+      <div class="f-group">
+        <label class="f-label">Password</label>
+        <input type="password" class="f-input" id="adminPassInput" placeholder="Enter admin password" onkeypress="if(event.key==='Enter')adminLogin()">
+      </div>
+      <button class="submit-btn" onclick="adminLogin()">Login →</button>
+      <div class="admin-login-err" id="loginErr">❌ Wrong password</div>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="adminDashboard" style="display:none">
+    <div class="admin-container">
+      <div class="admin-header">
+        <div class="admin-title">🎟 Admin Dashboard</div>
+        <button class="admin-logout" onclick="adminLogout()">Logout</button>
+      </div>
+
+      <div class="admin-stats" id="adminStats"></div>
+
+      <div class="admin-filter" id="adminFilter">
+        <button class="filter-btn active" onclick="filterBookings('all',this)">All</button>
+        <button class="filter-btn" onclick="filterBookings('pending',this)">🟡 Pending</button>
+        <button class="filter-btn" onclick="filterBookings('confirmed',this)">🔵 Confirmed</button>
+        <button class="filter-btn" onclick="filterBookings('paid',this)">🟣 Paid</button>
+        <button class="filter-btn" onclick="filterBookings('delivered',this)">✅ Delivered</button>
+        <button class="filter-btn" onclick="filterBookings('cancelled',this)">❌ Cancelled</button>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Match</th>
+              <th>Qty</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Admin Note</th>
+              <th>Update</th>
+            </tr>
+          </thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+        <div class="admin-empty" id="adminEmpty" style="display:none">No bookings found.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════ BOOKING POPUP ═══════ -->
+<div class="overlay" id="bookingOverlay">
+  <div class="popup" id="bookingPopup">
+    <div class="popup-header">
+      <div class="popup-title" id="popupTitle">Book Tickets</div>
+      <button class="popup-close" onclick="closePopup()">✕</button>
+    </div>
+    <div class="popup-body">
+
+      <!-- STEP 1: Details Form -->
+      <div id="step1">
+        <div class="popup-match-info" id="popupMatchInfo"></div>
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label">Full Name *</label>
+            <input type="text" class="f-input" id="bName" placeholder="Your full name">
+          </div>
+          <div class="f-group">
+            <label class="f-label">Phone Number *</label>
+            <input type="tel" class="f-input" id="bPhone" placeholder="+91 XXXXX XXXXX">
+          </div>
+        </div>
+        <div class="f-group">
+          <label class="f-label">Email Address *</label>
+          <input type="email" class="f-input" id="bEmail" placeholder="your@email.com">
+        </div>
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label">No. of Tickets *</label>
+            <select class="f-input" id="bQty" onchange="updatePriceSummary()">
+              <option value="1">1 Ticket</option>
+              <option value="2">2 Tickets</option>
+              <option value="3">3 Tickets</option>
+              <option value="4">4 Tickets</option>
+            </select>
+          </div>
+          <div class="f-group">
+            <label class="f-label">Category</label>
+            <select class="f-input" id="bCat" onchange="updatePriceSummary()">
+              <option value="general">General Stand</option>
+              <option value="premium">Premium Stand</option>
+              <option value="pavilion">Pavilion Club</option>
+            </select>
+          </div>
+        </div>
+        <div class="price-summary" id="priceSummary"></div>
+        <button class="submit-btn" id="step1Btn" onclick="proceedToPayment()">Continue to Payment →</button>
+        <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">Your ticket will be sent to your phone number & email after payment</p>
+      </div>
+
+      <!-- STEP 2: UPI Payment -->
+      <div id="step2" style="display:none">
+        <div class="booking-id-display">
+          <div class="bid-label">Your Booking ID</div>
+          <div class="bid-value" id="displayBookingId">—</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">Save this ID to track your ticket</div>
+        </div>
+
+        <div class="upi-box">
+          <div class="upi-instruction">Send the exact amount below to this UPI ID. <strong style="color:var(--gold-light)">Do NOT close this page</strong> until payment is done.</div>
+
+          <div style="font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Pay Amount</div>
+          <div class="upi-amount" id="upiAmount">₹0</div>
+
+          <div style="font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">To UPI ID</div>
+          <div class="upi-id-box">
+            <span class="upi-id-text" id="upiIdDisplay">ticketzone@upi</span>
+            <button class="copy-btn" onclick="copyUPI()">📋 Copy</button>
+          </div>
+          <div class="upi-name">Account Name: <strong style="color:var(--text)">TicketZone India</strong></div>
+
+          <div class="timer-box">
+            <div class="timer-text">⏳ Complete payment within — we'll process your ticket immediately after</div>
+            <div class="timer-count" id="timerDisplay">10:00</div>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label">Enter UTR / Transaction ID *</label>
+            <input type="text" class="f-input" id="utrInput" placeholder="12-digit UTR number from your UPI app">
+          </div>
+
+          <button class="confirm-payment-btn" onclick="confirmPayment()">✅ I've Paid — Confirm Booking</button>
+          <p class="payment-note">After confirming, your ticket will be sent to your phone & email.<br>Status trackable anytime with your Booking ID.</p>
+        </div>
+      </div>
+
+      <!-- STEP 3: Waiting -->
+      <div id="step3" style="display:none">
+        <div class="waiting-box">
+          <div class="waiting-icon">🏏</div>
+          <div class="waiting-title">Booking Confirmed!</div>
+          <div class="booking-id-display" style="margin:16px 0">
+            <div class="bid-label">Your Booking ID</div>
+            <div class="bid-value" id="finalBookingId">—</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">📸 Screenshot this ID</div>
+          </div>
+          <div class="waiting-sub">Payment received! Our team is processing your ticket.<br>You'll receive it on your phone & email within 2 hours.</div>
+          <div class="waiting-steps">
+            <div class="w-step"><div class="w-step-icon">✅</div><div>Booking submitted & payment noted</div></div>
+            <div class="w-step"><div class="w-step-icon">⚙️</div><div>Our team verifying & sourcing your ticket</div></div>
+            <div class="w-step"><div class="w-step-icon">📱</div><div>Ticket sent to your phone & email</div></div>
+          </div>
+          <span class="check-status-link" onclick="closeAndCheckStatus()">🔍 Track live status with Booking ID →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ══════════════════════════════════════
+// CONFIG — Replace these before going live
+// ══════════════════════════════════════
+const CONFIG = {
+  SUPABASE_URL: 'https://YOUR_PROJECT.supabase.co',
+  SUPABASE_KEY: 'YOUR_ANON_KEY',
+  UPI_ID: 'ticketzone@upi',          // ← Your real UPI ID
+  ADMIN_PASSWORD: 'admin@tz2026',    // ← Change this!
+  PAYMENT_TIMER_MINS: 10
+};
+
+// ══════════════════════════════════════
+// MATCH DATA — Update prices manually
+// ══════════════════════════════════════
+const MATCHES = [
+  { id:1, date:'Mar 28, 2026', time:'7:30 PM', t1:'MI', f1:'🔵', t2:'CSK', f2:'🟡', venue:'Wankhede, Mumbai',       prices:{general:1199, premium:1799, pavilion:2999}, avail:30, sold:false },
+  { id:2, date:'Mar 29, 2026', time:'3:30 PM', t1:'RCB', f1:'🔴', t2:'KKR', f2:'💜', venue:'Chinnaswamy, Bangalore', prices:{general:999,  premium:1499, pavilion:2499}, avail:55, sold:false },
+  { id:3, date:'Mar 31, 2026', time:'7:30 PM', t1:'SRH', f1:'🟠', t2:'DC',  f2:'🔵', venue:'Rajiv Gandhi, Hyderabad',prices:{general:899,  premium:1299, pavilion:2199}, avail:70, sold:false },
+  { id:4, date:'Apr 1, 2026',  time:'7:30 PM', t1:'PBKS',f1:'🔴', t2:'RR',  f2:'🩷', venue:'IS Bindra, Mohali',      prices:{general:799,  premium:1199, pavilion:1999}, avail:0,  sold:true  },
+  { id:5, date:'Apr 3, 2026',  time:'7:30 PM', t1:'GT',  f1:'🔵', t2:'LSG', f2:'🟡', venue:'Narendra Modi, Ahmedabad',prices:{general:999, premium:1599, pavilion:2799}, avail:20, sold:false },
+  { id:6, date:'Apr 5, 2026',  time:'7:30 PM', t1:'MI',  f1:'🔵', t2:'RCB', f2:'🔴', venue:'Wankhede, Mumbai',       prices:{general:1499, premium:2199, pavilion:3499}, avail:10, sold:false },
+];
+
+// Note: All prices already include ₹300 arrangement fee
+const PRICE_BREAKDOWN = {
+  general:  { base: 899,  fee: 300 },
+  premium:  { base: 1499, fee: 300 },
+  pavilion: { base: 2699, fee: 300 },
+};
+
+let selectedMatch = null;
+let currentBookingId = null;
+let timerInterval = null;
+
+// ══════════════════════════════════════
+// PAGE ROUTING
+// ══════════════════════════════════════
+function showStatusPage() {
+  document.getElementById('mainSite').style.display = 'none';
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('statusPage').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+function showMainSite() {
+  document.getElementById('mainSite').style.display = 'block';
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('statusPage').style.display = 'none';
+}
+function showAdminPage() {
+  document.getElementById('mainSite').style.display = 'none';
+  document.getElementById('statusPage').style.display = 'none';
+  document.getElementById('adminPage').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+// Hidden admin route — go to /#admin
+window.addEventListener('hashchange', handleHash);
+window.addEventListener('load', handleHash);
+function handleHash() {
+  if (location.hash === '#admin') showAdminPage();
+}
+
+// ══════════════════════════════════════
+// MATCH CARDS
+// ══════════════════════════════════════
+function renderMatches() {
+  const grid = document.getElementById('matchesGrid');
+  grid.innerHTML = '';
+  MATCHES.forEach(m => {
+    const card = document.createElement('div');
+    card.className = `match-card${m.sold ? ' sold-out' : ''}`;
+    card.dataset.id = m.id;
+    card.innerHTML = `
+      ${m.sold ? '<div class="sold-label">Sold Out</div>' : ''}
+      <div class="match-date-badge">📅 ${m.date} · ${m.time}</div>
+      <div class="match-teams">
+        <div class="team"><div class="team-flag">${m.f1}</div><div class="team-code">${m.t1}</div></div>
+        <div class="vs">VS</div>
+        <div class="team"><div class="team-flag">${m.f2}</div><div class="team-code">${m.t2}</div></div>
+      </div>
+      <div class="match-info">
+        <div class="match-venue">📍 ${m.venue}</div>
+        <div><div class="price-label">From</div><div class="price-val">₹${m.prices.general}</div></div>
+      </div>
+      ${!m.sold ? `
+        <div class="avail-bar"><div class="avail-fill" style="width:${100-m.avail}%"></div></div>
+        <div class="avail-text">
+          <span>${m.avail < 20 ? '🔥 Almost Gone!' : '✅ Available'}</span>
+          <span>${m.avail}% seats left</span>
+        </div>` : ''}
+    `;
+    if (!m.sold) card.onclick = () => openBookingPopup(m);
+    grid.appendChild(card);
+  });
+}
+
+function scrollToMatches() {
+  document.getElementById('matches').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════
+// BOOKING POPUP
+// ══════════════════════════════════════
+function openBookingPopup(match) {
+  selectedMatch = match;
+  document.getElementById('popupTitle').textContent = `Book: ${match.t1} vs ${match.t2}`;
+  document.getElementById('popupMatchInfo').innerHTML =
+    `<strong>🏏 ${match.t1} vs ${match.t2}</strong><br>📅 ${match.date} · ${match.time} &nbsp;|&nbsp; 📍 ${match.venue}`;
+  showStep(1);
+  updatePriceSummary();
+  document.getElementById('bookingOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePopup() {
+  document.getElementById('bookingOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  setTimeout(() => { showStep(1); resetForm(); }, 300);
+}
+
+document.getElementById('bookingOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closePopup();
+});
+
+function showStep(n) {
+  [1,2,3].forEach(i => document.getElementById(`step${i}`).style.display = i===n ? 'block' : 'none');
+}
+
+function updatePriceSummary() {
+  if (!selectedMatch) return;
+  const cat = document.getElementById('bCat').value;
+  const qty = parseInt(document.getElementById('bQty').value);
+  const basePrice = selectedMatch.prices[cat];
+  const total = basePrice * qty;
+  const breakdown = PRICE_BREAKDOWN[cat];
+  document.getElementById('priceSummary').innerHTML = `
+    <div class="price-row"><span>Base ticket price (${cat})</span><span>₹${breakdown.base} × ${qty}</span></div>
+    <div class="price-row"><span>Arrangement & service fee</span><span>₹${breakdown.fee} × ${qty}</span></div>
+    <div class="price-row total"><span>Total</span><span>₹${total}</span></div>
+  `;
+}
+
+function resetForm() {
+  ['bName','bPhone','bEmail','utrInput'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('bQty').value = '1';
+  document.getElementById('bCat').value = 'general';
+  currentBookingId = null;
+}
+
+// ══════════════════════════════════════
+// STEP 1 → STEP 2
+// ══════════════════════════════════════
+async function proceedToPayment() {
+  const name  = document.getElementById('bName').value.trim();
+  const phone = document.getElementById('bPhone').value.trim();
+  const email = document.getElementById('bEmail').value.trim();
+  const qty   = parseInt(document.getElementById('bQty').value);
+  const cat   = document.getElementById('bCat').value;
+
+  if (!name || !phone || !email) { alert('Please fill all required fields.'); return; }
+  if (!/^\+?[\d\s-]{10,}$/.test(phone)) { alert('Please enter a valid phone number.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+
+  const btn = document.getElementById('step1Btn');
+  btn.textContent = 'Processing...';
+  btn.disabled = true;
+
+  const bookingId = generateBookingId();
+  const total = selectedMatch.prices[cat] * qty;
+  currentBookingId = bookingId;
+
+  // Save to Supabase
+  await saveBooking({
+    booking_id: bookingId, name, phone, email,
+    match_id: selectedMatch.id,
+    match_name: `${selectedMatch.t1} vs ${selectedMatch.t2}`,
+    match_date: selectedMatch.date,
+    venue: selectedMatch.venue,
+    quantity: qty, category: cat,
+    total_amount: total,
+    status: 'pending',
+    utr: null, admin_notes: null,
+    created_at: new Date().toISOString()
+  });
+
+  btn.textContent = 'Continue to Payment →';
+  btn.disabled = false;
+
+  // Show Step 2
+  document.getElementById('displayBookingId').textContent = bookingId;
+  document.getElementById('upiAmount').textContent = `₹${total}`;
+  document.getElementById('upiIdDisplay').textContent = CONFIG.UPI_ID;
+  showStep(2);
+  startTimer(CONFIG.PAYMENT_TIMER_MINS * 60);
+}
+
+// ══════════════════════════════════════
+// STEP 2 → STEP 3
+// ══════════════════════════════════════
+async function confirmPayment() {
+  const utr = document.getElementById('utrInput').value.trim();
+  if (!utr || utr.length < 8) { alert('Please enter your UTR / Transaction ID from your UPI app.'); return; }
+
+  const btn = document.querySelector('.confirm-payment-btn');
+  btn.textContent = 'Confirming...';
+  btn.disabled = true;
+
+  await updateBookingStatus(currentBookingId, 'paid', null, utr);
+
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+
+  document.getElementById('finalBookingId').textContent = currentBookingId;
+  showStep(3);
+
+  btn.textContent = '✅ I\'ve Paid — Confirm Booking';
+  btn.disabled = false;
+}
+
+function closeAndCheckStatus() {
+  const bid = currentBookingId;
+  closePopup();
+  setTimeout(() => {
+    showStatusPage();
+    document.getElementById('statusInput').value = bid;
+    checkStatus();
+  }, 400);
+}
+
+// ══════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════
+function startTimer(seconds) {
+  let remaining = seconds;
+  const display = document.getElementById('timerDisplay');
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    remaining--;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    display.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      display.textContent = 'Expired';
+    }
+  }, 1000);
+}
+
+function copyUPI() {
+  navigator.clipboard.writeText(CONFIG.UPI_ID).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+// ══════════════════════════════════════
+// BOOKING ID GENERATOR
+// ══════════════════════════════════════
+function generateBookingId() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let id = 'TZ-2026-';
+  for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+  return id;
+}
+
+// ══════════════════════════════════════
+// SUPABASE CALLS
+// ══════════════════════════════════════
+async function saveBooking(data) {
+  try {
+    const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/bookings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': CONFIG.SUPABASE_KEY,
+        'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) console.error('Supabase save error:', await res.text());
+  } catch(e) {
+    // Store locally as fallback
+    const local = JSON.parse(localStorage.getItem('tz_bookings') || '[]');
+    local.push(data);
+    localStorage.setItem('tz_bookings', JSON.stringify(local));
+  }
+}
+
+async function updateBookingStatus(bookingId, status, adminNotes, utr) {
+  const body = { status };
+  if (adminNotes !== null) body.admin_notes = adminNotes;
+  if (utr !== null) body.utr = utr;
+  body.updated_at = new Date().toISOString();
+  try {
+    await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/bookings?booking_id=eq.${bookingId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': CONFIG.SUPABASE_KEY,
+        'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(body)
+    });
+  } catch(e) {
+    // Update local fallback
+    const local = JSON.parse(localStorage.getItem('tz_bookings') || '[]');
+    const idx = local.findIndex(b => b.booking_id === bookingId);
+    if (idx > -1) { local[idx].status = status; if(adminNotes) local[idx].admin_notes = adminNotes; if(utr) local[idx].utr = utr; }
+    localStorage.setItem('tz_bookings', JSON.stringify(local));
+  }
+}
+
+async function fetchBookings() {
+  try {
+    const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/bookings?select=*&order=created_at.desc`, {
+      headers: { 'apikey': CONFIG.SUPABASE_KEY, 'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}` }
+    });
+    if (res.ok) return await res.json();
+  } catch(e) {}
+  return JSON.parse(localStorage.getItem('tz_bookings') || '[]').reverse();
+}
+
+async function fetchBookingById(id) {
+  try {
+    const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/bookings?booking_id=eq.${encodeURIComponent(id)}&select=*`, {
+      headers: { 'apikey': CONFIG.SUPABASE_KEY, 'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}` }
+    });
+    if (res.ok) { const arr = await res.json(); return arr[0] || null; }
+  } catch(e) {}
+  const local = JSON.parse(localStorage.getItem('tz_bookings') || '[]');
+  return local.find(b => b.booking_id === id) || null;
+}
+
+// ══════════════════════════════════════
+// STATUS CHECK
+// ══════════════════════════════════════
+async function checkStatus() {
+  const id = document.getElementById('statusInput').value.trim().toUpperCase();
+  const btn = document.getElementById('checkBtn');
+  const errEl = document.getElementById('statusErr');
+  const resultEl = document.getElementById('statusResult');
+
+  if (!id) { errEl.style.display='block'; errEl.textContent='Please enter your Booking ID.'; return; }
+
+  btn.textContent = '⏳ Checking...';
+  btn.disabled = true;
+  errEl.style.display = 'none';
+  resultEl.style.display = 'none';
+
+  const booking = await fetchBookingById(id);
+  btn.textContent = '🔍 Check Status';
+  btn.disabled = false;
+
+  if (!booking) {
+    errEl.style.display = 'block';
+    errEl.textContent = '❌ Booking ID not found. Please check and try again.';
+    return;
+  }
+
+  const statusMessages = {
+    pending:   { icon:'🟡', label:'Payment Pending',    msg:'Your booking is received. Please complete the UPI payment if not done yet. If already paid, we\'ll update shortly.' },
+    confirmed: { icon:'🔵', label:'Confirmed',           msg:'Your booking is confirmed! Our team is sourcing your ticket. You\'ll receive it within 2 hours.' },
+    paid:      { icon:'🟣', label:'Payment Received',    msg:'Payment noted! Your ticket is being processed. Sit tight — it\'ll reach your phone & email very soon. 🏏' },
+    delivered: { icon:'✅', label:'Ticket Delivered!',   msg:`🎉 Your ticket has been sent to your phone number (${booking.phone}) and email (${booking.email}). Check your messages! Enjoy the match! 🏏` },
+    cancelled: { icon:'❌', label:'Cancelled',           msg:'This booking has been cancelled. If you paid, a refund has been initiated within 24 hours. Contact us on Instagram @ticketzoneindia.' }
+  };
+
+  const info = statusMessages[booking.status] || statusMessages.pending;
+  const badge = document.getElementById('statusBadge');
+  badge.className = `status-badge ${booking.status}`;
+  badge.innerHTML = `${info.icon} ${info.label}`;
+
+  document.getElementById('statusInfoGrid').innerHTML = `
+    <div class="status-info-item"><div class="sii-label">Booking ID</div><div class="sii-value" style="font-family:monospace;color:var(--gold)">${booking.booking_id}</div></div>
+    <div class="status-info-item"><div class="sii-label">Name</div><div class="sii-value">${booking.name}</div></div>
+    <div class="status-info-item"><div class="sii-label">Match</div><div class="sii-value">${booking.match_name}</div></div>
+    <div class="status-info-item"><div class="sii-label">Date</div><div class="sii-value">${booking.match_date}</div></div>
+    <div class="status-info-item"><div class="sii-label">Tickets</div><div class="sii-value">${booking.quantity} × ${booking.category}</div></div>
+    <div class="status-info-item"><div class="sii-label">Amount</div><div class="sii-value" style="color:var(--gold)">₹${booking.total_amount}</div></div>
+  `;
+
+  const msgEl = document.getElementById('statusMsg');
+  msgEl.className = `status-message${booking.status === 'delivered' ? ' delivered-msg' : ''}`;
+  msgEl.textContent = (booking.admin_notes ? `Note: ${booking.admin_notes}\n\n` : '') + info.msg;
+
+  resultEl.className = `status-result ${booking.status}`;
+  resultEl.style.display = 'block';
+}
+
+// ══════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════
+let adminLoggedIn = false;
+let allBookings = [];
+let currentFilter = 'all';
+
+function adminLogin() {
+  const pass = document.getElementById('adminPassInput').value;
+  if (pass === CONFIG.ADMIN_PASSWORD) {
+    adminLoggedIn = true;
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminDashboard').style.display = 'block';
+    loadAdminData();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+
+function adminLogout() {
+  adminLoggedIn = false;
+  document.getElementById('adminLogin').style.display = 'flex';
+  document.getElementById('adminDashboard').style.display = 'none';
+  document.getElementById('adminPassInput').value = '';
+  showMainSite();
+  location.hash = '';
+}
+
+async function loadAdminData() {
+  allBookings = await fetchBookings();
+  renderAdminStats();
+  renderAdminTable(currentFilter);
+}
+
+function renderAdminStats() {
+  const counts = { all: allBookings.length, pending: 0, confirmed: 0, paid: 0, delivered: 0, cancelled: 0 };
+  let revenue = 0;
+  allBookings.forEach(b => {
+    counts[b.status] = (counts[b.status] || 0) + 1;
+    if (b.status === 'paid' || b.status === 'delivered') revenue += (b.total_amount || 0);
+  });
+  document.getElementById('adminStats').innerHTML = `
+    <div class="astat"><div class="astat-num">${counts.all}</div><div class="astat-label">Total</div></div>
+    <div class="astat"><div class="astat-num" style="color:#fbbf24">${counts.pending}</div><div class="astat-label">Pending</div></div>
+    <div class="astat"><div class="astat-num" style="color:#a78bfa">${counts.paid}</div><div class="astat-label">Paid</div></div>
+    <div class="astat"><div class="astat-num" style="color:var(--green)">${counts.delivered}</div><div class="astat-label">Delivered</div></div>
+    <div class="astat"><div class="astat-num" style="color:var(--gold)">₹${revenue.toLocaleString()}</div><div class="astat-label">Revenue</div></div>
+  `;
+}
+
+function filterBookings(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdminTable(filter);
+}
+
+function renderAdminTable(filter) {
+  const tbody = document.getElementById('adminTableBody');
+  const empty = document.getElementById('adminEmpty');
+  const filtered = filter === 'all' ? allBookings : allBookings.filter(b => b.status === filter);
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(b => `
+    <tr>
+      <td><span class="bid-cell">${b.booking_id}</span></td>
+      <td>${b.name}</td>
+      <td>${b.phone}</td>
+      <td style="white-space:nowrap">${b.match_name}<br><span style="font-size:11px;color:var(--muted)">${b.match_date} · ${b.venue?.split(',')[0]}</span></td>
+      <td>${b.quantity} × ${b.category}</td>
+      <td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:18px">₹${b.total_amount}</td>
+      <td><span class="pill ${b.status}">${b.status}</span></td>
+      <td><input type="text" class="notes-input" id="notes_${b.booking_id}" value="${b.admin_notes || ''}" placeholder="Add note..."></td>
+      <td>
+        <select class="status-select" id="sel_${b.booking_id}">
+          <option value="pending"   ${b.status==='pending'   ?'selected':''}>🟡 Pending</option>
+          <option value="confirmed" ${b.status==='confirmed' ?'selected':''}>🔵 Confirmed</option>
+          <option value="paid"      ${b.status==='paid'      ?'selected':''}>🟣 Paid</option>
+          <option value="delivered" ${b.status==='delivered' ?'selected':''}>✅ Delivered</option>
+          <option value="cancelled" ${b.status==='cancelled' ?'selected':''}>❌ Cancelled</option>
+        </select>
+        <button class="update-btn" style="margin-top:6px" onclick="adminUpdate('${b.booking_id}')">Update</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function adminUpdate(bookingId) {
+  const newStatus = document.getElementById(`sel_${bookingId}`).value;
+  const notes = document.getElementById(`notes_${bookingId}`).value.trim();
+  await updateBookingStatus(bookingId, newStatus, notes, null);
+  await loadAdminData();
+  showToast(`✅ ${bookingId} → ${newStatus}`);
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;font-family:Rajdhani,sans-serif;font-size:14px;letter-spacing:2px;padding:10px 24px;z-index:9999;font-weight:700';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ══════════════════════════════════════
+// FAQ
+// ══════════════════════════════════════
+function toggleFaq(el) {
+  const ans = el.nextElementSibling;
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-q').forEach(q => { q.classList.remove('open'); q.nextElementSibling.classList.remove('open'); });
+  if (!isOpen) { el.classList.add('open'); ans.classList.add('open'); }
+}
+
+
+// ══════════════════════════════════════
+// CRICKET FIELD CANVAS ANIMATION
+// ══════════════════════════════════════
+function initCricketCanvas() {
+  const canvas = document.getElementById('cricketCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, animId;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); });
+
+  // ── FIELD ──
+  function drawField() {
+    // Dark green base
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, W, H);
+
+    // Oval field
+    ctx.save();
+    ctx.translate(W/2, H * 0.58);
+    ctx.scale(1, 0.42);
+    // Outer oval glow
+    const outerGrad = ctx.createRadialGradient(0,0,W*0.25, 0,0,W*0.52);
+    outerGrad.addColorStop(0, 'rgba(0,30,8,0.95)');
+    outerGrad.addColorStop(0.7, 'rgba(0,15,4,0.98)');
+    outerGrad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.beginPath();
+    ctx.arc(0, 0, W*0.52, 0, Math.PI*2);
+    ctx.fillStyle = outerGrad;
+    ctx.fill();
+
+    // Mowing stripes
+    for (let i = -12; i <= 12; i++) {
+      ctx.beginPath();
+      ctx.arc(0, 0, Math.abs(i) * W * 0.04, 0, Math.PI*2);
+      ctx.strokeStyle = i%2===0 ? 'rgba(0,60,20,0.5)' : 'rgba(0,35,10,0.5)';
+      ctx.lineWidth = W*0.04;
+      ctx.stroke();
+    }
+
+    // Boundary circle
+    ctx.beginPath();
+    ctx.arc(0, 0, W*0.44, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(0,229,255,0.15)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([12, 8]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Inner circle (30-yard)
+    ctx.beginPath();
+    ctx.arc(0, 0, W*0.18, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.restore();
+
+    // Pitch rectangle
+    const pitchW = W * 0.045;
+    const pitchH = H * 0.3;
+    const px = W/2 - pitchW/2;
+    const py = H * 0.32;
+    const pitchGrad = ctx.createLinearGradient(px, py, px+pitchW, py);
+    pitchGrad.addColorStop(0, 'rgba(180,150,90,0.15)');
+    pitchGrad.addColorStop(0.5, 'rgba(210,180,110,0.25)');
+    pitchGrad.addColorStop(1, 'rgba(180,150,90,0.15)');
+    ctx.fillStyle = pitchGrad;
+    ctx.fillRect(px, py, pitchW, pitchH);
+    ctx.strokeStyle = 'rgba(255,230,150,0.1)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(px, py, pitchW, pitchH);
+
+    // Crease lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+    ctx.lineWidth = 1.5;
+    // Batting crease
+    ctx.beginPath(); ctx.moveTo(px - 12, py + pitchH*0.12); ctx.lineTo(px + pitchW + 12, py + pitchH*0.12); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(px - 12, py + pitchH*0.88); ctx.lineTo(px + pitchW + 12, py + pitchH*0.88); ctx.stroke();
+    // Popping crease
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.beginPath(); ctx.moveTo(px - 20, py + pitchH*0.18); ctx.lineTo(px + pitchW + 20, py + pitchH*0.18); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(px - 20, py + pitchH*0.82); ctx.lineTo(px + pitchW + 20, py + pitchH*0.82); ctx.stroke();
+
+    // Stumps top
+    const stumpY = py + pitchH*0.1;
+    const stumpY2 = py + pitchH*0.9;
+    [-6, 0, 6].forEach(ox => {
+      ctx.fillStyle = 'rgba(255,220,100,0.5)';
+      ctx.fillRect(W/2 + ox - 1, stumpY - 8, 2, 8);
+      ctx.fillRect(W/2 + ox - 1, stumpY2, 2, 8);
+    });
+  }
+
+  // ── BALL ──
+  const ball = {
+    x: W/2, y: H*0.45,
+    vx: (Math.random()-0.5)*3.5 + 1.8,
+    vy: -(Math.random()*2 + 1.5),
+    r: 7, trail: [],
+    bounce: 0, maxBounces: 3,
+    inAir: true, spinAngle: 0
+  };
+
+  function resetBall() {
+    ball.x = W/2 + (Math.random()-0.5)*60;
+    ball.y = H*0.42;
+    const dir = Math.random() > 0.5 ? 1 : -1;
+    ball.vx = dir * (Math.random()*3 + 2);
+    ball.vy = -(Math.random()*3 + 2);
+    ball.trail = [];
+    ball.bounce = 0;
+    ball.inAir = true;
+    ball.spinAngle = 0;
+  }
+
+  // ── BATSMAN ──
+  const batsman = {
+    x: W/2, y: H*0.72,
+    batAngle: -0.8,
+    swinging: false, swingT: 0
+  };
+
+  function triggerSwing() {
+    if (!batsman.swinging) {
+      batsman.swinging = true;
+      batsman.swingT = 0;
+    }
+  }
+
+  // ── FIELDERS ──
+  const fielders = [];
+  function initFielders() {
+    fielders.length = 0;
+    const positions = [
+      {a:0.15, r:0.38}, {a:0.3, r:0.38}, {a:0.5, r:0.42},
+      {a:0.7, r:0.38}, {a:0.85, r:0.38}, {a:0.0, r:0.28},
+      {a:0.55, r:0.22}, {a:0.45, r:0.22}, {a:1.0, r:0.28},
+    ];
+    positions.forEach(p => {
+      const angle = p.a * Math.PI * 2;
+      const rx = W * p.r;
+      const ry = H * p.r * 0.42;
+      fielders.push({
+        x: W/2 + Math.cos(angle)*rx,
+        y: H*0.58 + Math.sin(angle)*ry * 0.9,
+        pulse: Math.random()*Math.PI*2
+      });
+    });
+  }
+  initFielders();
+
+  function drawFielder(f) {
+    f.pulse += 0.025;
+    const glow = 0.5 + Math.sin(f.pulse)*0.3;
+    // Body
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, 5, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(201,162,39,${0.5*glow})`;
+    ctx.fill();
+    // Head
+    ctx.beginPath();
+    ctx.arc(f.x, f.y-8, 3, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,220,160,${0.6*glow})`;
+    ctx.fill();
+    // Glow ring
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, 9, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(201,162,39,${0.15*glow})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  function drawBatsman() {
+    const bx = batsman.x, by = batsman.y;
+    // Swing animation
+    if (batsman.swinging) {
+      batsman.swingT += 0.08;
+      batsman.batAngle = -0.8 + Math.sin(batsman.swingT) * 2.2;
+      if (batsman.swingT > Math.PI) {
+        batsman.swinging = false;
+        batsman.batAngle = -0.8;
+        batsman.swingT = 0;
+      }
+    }
+    ctx.save();
+    ctx.translate(bx, by);
+    // Body
+    ctx.fillStyle = 'rgba(220,180,100,0.75)';
+    ctx.fillRect(-6, -22, 12, 22);
+    // Head
+    ctx.beginPath();
+    ctx.arc(0, -28, 7, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,220,160,0.8)';
+    ctx.fill();
+    // Helmet glow
+    ctx.beginPath();
+    ctx.arc(0, -28, 9, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(201,162,39,0.4)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Bat
+    ctx.save();
+    ctx.rotate(batsman.batAngle);
+    ctx.fillStyle = 'rgba(180,140,60,0.85)';
+    ctx.fillRect(8, -5, 4, 36);
+    ctx.fillStyle = 'rgba(240,200,100,0.9)';
+    ctx.fillRect(8, -5, 4, 8);
+    ctx.restore();
+    ctx.restore();
+  }
+
+  // ── PARTICLES (sparks on hit) ──
+  let particles = [];
+  function spawnParticles(x, y) {
+    for (let i = 0; i < 18; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 4 + 1;
+      particles.push({
+        x, y,
+        vx: Math.cos(angle)*speed,
+        vy: Math.sin(angle)*speed - 2,
+        life: 1, r: Math.random()*3+1,
+        color: Math.random()>0.5 ? `rgba(255,220,80,` : `rgba(255,140,40,`
+      });
+    }
+  }
+
+  // ── FLOODLIGHT SPOTS ──
+  function drawFloodlights() {
+    const lights = [
+      {x:W*0.08, y:H*0.05}, {x:W*0.92, y:H*0.05},
+      {x:W*0.04, y:H*0.35}, {x:W*0.96, y:H*0.35}
+    ];
+    lights.forEach(l => {
+      const grad = ctx.createRadialGradient(l.x, l.y, 0, l.x, l.y, 50);
+      grad.addColorStop(0, 'rgba(255,240,180,0.7)');
+      grad.addColorStop(1, 'rgba(255,240,180,0)');
+      ctx.beginPath();
+      ctx.arc(l.x, l.y, 50, 0, Math.PI*2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    });
+  }
+
+  let frameCount = 0;
+  let hitScheduled = false;
+
+  function animate() {
+    animId = requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, W, H);
+    drawField();
+    drawFloodlights();
+
+    frameCount++;
+
+    // Update ball
+    if (ball.inAir) {
+      ball.vy += 0.12; // gravity
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+      ball.spinAngle += 0.15;
+
+      // Trail
+      ball.trail.push({x:ball.x, y:ball.y, life:1});
+      if (ball.trail.length > 18) ball.trail.shift();
+
+      // Bounce on pitch area
+      if (ball.y > H*0.6 && ball.bounce < ball.maxBounces) {
+        ball.vy = -ball.vy * 0.6;
+        ball.vx *= 0.85;
+        ball.y = H*0.6;
+        ball.bounce++;
+      }
+
+      // Near batsman — trigger swing + hit
+      const dx = ball.x - batsman.x;
+      const dy = ball.y - batsman.y;
+      if (Math.sqrt(dx*dx+dy*dy) < 30 && !hitScheduled) {
+        hitScheduled = true;
+        triggerSwing();
+        setTimeout(() => {
+          spawnParticles(ball.x, ball.y);
+          ball.vx = (Math.random()-0.3)*6 + 3;
+          ball.vy = -(Math.random()*4 + 3);
+          ball.bounce = 0;
+          hitScheduled = false;
+        }, 150);
+      }
+
+      // Out of bounds — reset
+      if (ball.x < -50 || ball.x > W+50 || ball.y > H+50) {
+        resetBall();
+      }
+    }
+
+    // Draw trail
+    ball.trail.forEach((t, i) => {
+      const alpha = (i/ball.trail.length) * 0.5;
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, ball.r*(i/ball.trail.length)*0.7, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(220,60,30,${alpha})`;
+      ctx.fill();
+    });
+
+    // Draw ball
+    const ballGrad = ctx.createRadialGradient(ball.x-2, ball.y-2, 0, ball.x, ball.y, ball.r);
+    ballGrad.addColorStop(0, 'rgba(255,100,80,0.95)');
+    ballGrad.addColorStop(0.6, 'rgba(180,30,20,0.95)');
+    ballGrad.addColorStop(1, 'rgba(100,15,10,0.9)');
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+    ctx.fillStyle = ballGrad;
+    ctx.fill();
+    // Seam
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, ball.spinAngle, ball.spinAngle+Math.PI);
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    // Ball glow
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r+4, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(220,60,30,0.12)';
+    ctx.fill();
+
+    // Fielders
+    fielders.forEach(drawFielder);
+
+    // Batsman
+    drawBatsman();
+
+    // Particles
+    particles = particles.filter(p => p.life > 0);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.15;
+      p.life -= 0.04;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = p.color + p.life + ')';
+      ctx.fill();
+    });
+
+    // Auto new delivery every ~280 frames
+    if (frameCount % 280 === 0) resetBall();
+  }
+
+  animate();
+}
+
+// Build floodlight rays
+function initFloodRays() {
+  const container = document.getElementById('flRays');
+  if (!container) return;
+  container.innerHTML = '';
+  const lights = [{x:'8%',top:'5%'},{x:'92%',top:'5%'},{x:'4%',top:'30%'},{x:'96%',top:'30%'}];
+  lights.forEach(l => {
+    for (let i=0; i<5; i++) {
+      const ray = document.createElement('div');
+      ray.className = 'fl-ray';
+      const angle = (Math.random()-0.5)*40;
+      const h = 200+Math.random()*250;
+      ray.style.cssText = `left:${l.x};top:${l.top};height:${h}px;transform:rotate(${angle}deg);opacity:${0.3+Math.random()*0.4}`;
+      container.appendChild(ray);
+    }
+  });
+}
+
+// Build crowd
+function initCrowd() {
+  const row = document.getElementById('crowdRow');
+  if (!row) return;
+  row.innerHTML = '';
+  for (let i=0; i<120; i++) {
+    const p = document.createElement('div');
+    p.className = 'crowd-p';
+    p.style.height = (18+Math.random()*28)+'px';
+    p.style.animationDelay = (Math.random()*1.5)+'s';
+    p.style.animationDuration = (1.2+Math.random()*0.8)+'s';
+    p.style.background = Math.random()>0.6 ? 'rgba(201,162,39,0.6)' : Math.random()>0.5 ? 'rgba(80,120,200,0.5)' : 'rgba(200,60,60,0.5)';
+    row.appendChild(p);
+  }
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+renderMatches();
+initCricketCanvas();
+initFloodRays();
+initCrowd();
+</script>
+</body>
+</html>
